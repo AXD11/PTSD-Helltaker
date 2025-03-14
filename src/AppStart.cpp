@@ -16,7 +16,7 @@ void App::Start() {
     
     heroStandbyImages.reserve(12);
     heroMoveImages.reserve(6);
-    heroKickImages.reserve(11);
+    heroKickImages.reserve(12);
 
     for (int i = 0; i < 12; ++i) {
         heroStandbyImages.emplace_back(GA_RESOURCE_DIR"/Image/Hero/Standby/hero" + std::to_string(i + 1) + ".png");
@@ -28,7 +28,7 @@ void App::Start() {
     heroStandby->SetVisible(true);
     m_Root.AddChild(heroStandby);
 
-    for (int i = 1; i < 6; ++i) {
+    for (int i = 0; i < 6; ++i) {
         heroMoveImages.emplace_back(GA_RESOURCE_DIR"/Image/Hero/Move/move" + std::to_string(i + 1) + ".png");
     }
 
