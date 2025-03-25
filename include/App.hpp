@@ -3,11 +3,13 @@
 
 #include "Box.hpp"
 #include "Hero.hpp" 
+#include "MapLoader.hpp"
 #include "Wall.hpp"
 #include "pch.hpp" // IWYU pragma: export
 
 #include "Util/Renderer.hpp"
 #include <memory>
+#include <vector>
 
 class App {
 public:
@@ -54,6 +56,11 @@ private:
     std::shared_ptr<Wall> m_Wall;
 
     std::shared_ptr<Box> m_Box;
+
+    MapLoader m_MapLoader;
+
+    std::vector<std::shared_ptr<Tile>> testPtr;
+
 
     bool m_EnterDown = false;
     bool m_Up = false;

@@ -18,6 +18,13 @@ enum class HeroState {
     KICK,
 };
 
+enum class Direction{
+    Up,
+    Down,
+    Left,
+    Right,
+};
+
 class Hero : public Util::GameObject {
 
 public:
@@ -37,6 +44,8 @@ public:
     void SetImage(std::string image) { m_Drawable = std::make_shared<Util::Image>(image); }
 
     void SetState(HeroState state);
+
+    HeroState GetCurrentState() {return currentState; }
 
     void SetCenter(){
         center = glm::vec2(this->GetPosition().x + this->GetScaledSize().x / 2, this->GetPosition().y - this->GetScaledSize().y / 2);
@@ -62,6 +71,8 @@ public:
         SetPosition(glm::vec2(m_Transform.translation.x - moveStep, m_Transform.translation.y));
         SetCenter();
     }
+
+    bool CanMove(Direction dir, std::vector<std::shared_ptr<Tile>>& testPtr);
 
     bool IsColliding(const std::shared_ptr<Wall>& other, int position) const;
 
