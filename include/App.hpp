@@ -5,6 +5,7 @@
 #include "Hero.hpp" 
 #include "MapLoader.hpp"
 #include "Wall.hpp"
+#include "Floor.hpp"
 #include "pch.hpp" // IWYU pragma: export
 
 #include "Util/Renderer.hpp"
@@ -60,6 +61,8 @@ private:
     MapLoader m_MapLoader;
 
     std::vector<std::shared_ptr<Tile>> testPtr;
+
+    std::vector<std::shared_ptr<Floor>> floorPtr;
 
 
     bool m_EnterDown = false;

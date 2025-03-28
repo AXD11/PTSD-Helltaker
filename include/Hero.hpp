@@ -18,7 +18,7 @@ enum class HeroState {
     KICK,
 };
 
-enum class Direction{
+enum class Direction {
     Up,
     Down,
     Left,
@@ -72,11 +72,11 @@ public:
         SetCenter();
     }
 
-    bool CanMove(Direction dir, std::vector<std::shared_ptr<Tile>>& testPtr);
+    bool CanMove(Direction position, const std::vector<std::shared_ptr<Tile>>& tiles);
 
-    bool IsColliding(const std::shared_ptr<Wall>& other, int position) const;
+    bool IsColliding(const std::shared_ptr<Wall>& other, Direction position) const;
 
-    bool IsColliding(const std::shared_ptr<Box>& other, int position) const;
+    bool IsColliding(const std::shared_ptr<Box>& other, Direction position) const;
 
     std::shared_ptr<AnimatedCharacter> GetStandbyAnimation() const { return standbyAnimation; }
 

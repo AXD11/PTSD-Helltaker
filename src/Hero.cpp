@@ -74,6 +74,28 @@ bool Hero::IsColliding(const std::shared_ptr<Box>& other, int position) const {
     return false;
 }
 
+bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles){
+    for (const auto& tile : tiles) {
+        if (auto box = std::dynamic_pointer_cast<Box>(tile)) {
+            if (IsColliding(box, position)) {
+                if (box->CanMove(position, tiles)) {
+                    SetState(HeroState::KICK);
+                    box->Move(100, position);
+                    GetKickAnimation()->SetCurrentFrame(0);
+                    GetKickAnimation()->Play();
+                }
+                return false;
+            }
+        }
+        else if (auto wall = std::dynamic_pointer_cast<Wall>(tile)) {
+            if (IsColliding(wall, position)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void Hero::SetState(HeroState newState) {
     if (currentState == newState) return;
 

@@ -24,53 +24,37 @@ void App::Update() {
     if (m_Up) {
         m_Hero->SetCenter();
         m_Box->SetCenter();
-        if (!m_Hero->IsColliding(m_Wall, 1) && !m_Hero->IsColliding(m_Box, 1)) {
+        if (m_Hero->CanMove(Direction::Up, testPtr)) {
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveUp(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
         }
-        else if (m_Hero->IsColliding(m_Box, 1) && !m_Box->IsColliding(m_Wall, 1)) {
-            m_Hero->SetState(HeroState::KICK);
-            m_Box->MoveUp(moveStep);
-            m_Hero->GetKickAnimation()->SetCurrentFrame(0);
-            m_Hero->GetKickAnimation()->Play();
-        }
+
     }
     m_Up = Util::Input::IsKeyDown(Util::Keycode::W);
 
     if (m_Down) {
         m_Hero->SetCenter();
         m_Box->SetCenter();
-        if (!m_Hero->IsColliding(m_Wall, 2) && !m_Hero->IsColliding(m_Box, 2)) {
+        if (m_Hero->CanMove(Direction::Down, testPtr)) {
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveDown(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
         }
-        else if (m_Hero->IsColliding(m_Box, 2) && !m_Box->IsColliding(m_Wall, 2)) {
-            m_Hero->SetState(HeroState::KICK);
-            m_Box->MoveDown(moveStep);
-            m_Hero->GetKickAnimation()->SetCurrentFrame(0);
-            m_Hero->GetKickAnimation()->Play();
-        }
+
     }
     m_Down = Util::Input::IsKeyDown(Util::Keycode::S);
 
     if (m_Left) {
         m_Hero->SetCenter();
         m_Box->SetCenter();
-        if (!m_Hero->IsColliding(m_Wall, 3) && !m_Hero->IsColliding(m_Box, 3)) {
+        if (m_Hero->CanMove(Direction::Left, testPtr)) {
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveLeft(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
-        }
-        else if (m_Hero->IsColliding(m_Box, 3) && !m_Box->IsColliding(m_Wall, 3)) {
-            m_Hero->SetState(HeroState::KICK);
-            m_Box->MoveLeft(moveStep);
-            m_Hero->GetKickAnimation()->SetCurrentFrame(0);
-            m_Hero->GetKickAnimation()->Play();
         }
     }
     m_Left = Util::Input::IsKeyDown(Util::Keycode::A);
@@ -78,17 +62,11 @@ void App::Update() {
     if (m_Right) {
         m_Hero->SetCenter();
         m_Box->SetCenter();
-        if (!m_Hero->IsColliding(m_Wall, 4) && !m_Hero->IsColliding(m_Box, 4)) {
+        if (m_Hero->CanMove(Direction::Right, testPtr)) {
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveRight(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
-        }
-        else if (m_Hero->IsColliding(m_Box, 4) && !m_Box->IsColliding(m_Wall, 4)) {
-            m_Hero->SetState(HeroState::KICK);
-            m_Box->MoveRight(moveStep);
-            m_Hero->GetKickAnimation()->SetCurrentFrame(0);
-            m_Hero->GetKickAnimation()->Play();
         }
     }
     m_Right = Util::Input::IsKeyDown(Util::Keycode::D);
