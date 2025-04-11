@@ -1,5 +1,4 @@
 #include "Box.hpp"
-#include "Hero.hpp"
 
 Box::Box() : Tile(GA_RESOURCE_DIR"/Image/Box/box.png")
 {

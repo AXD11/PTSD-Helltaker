@@ -5,9 +5,11 @@
 #include <string>
 
 #include "AnimatedCharacter.hpp"
+#include "StepText.hpp"
 #include "Util/Logger.hpp"
 #include "Wall.hpp"
 #include "Box.hpp"
+#include "Enemy.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 
@@ -72,23 +74,35 @@ public:
         SetCenter();
     }
 
-    bool CanMove(Direction position, const std::vector<std::shared_ptr<Tile>>& tiles);
+    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles);
 
-    bool IsColliding(const std::shared_ptr<Wall>& other, Direction position) const;
+    bool MeetEnemy(int position, const std::vector<std::shared_ptr<Enemy>>& enemies, const std::vector<std::shared_ptr<Tile>>& tiles);
 
-    bool IsColliding(const std::shared_ptr<Box>& other, Direction position) const;
+    bool IsColliding(const std::shared_ptr<Wall>& other, int position) const;
+
+    bool IsColliding(const std::shared_ptr<Box>& other, int position) const;
+
+    bool IsColliding(const std::shared_ptr<Enemy>& other, int position) const;
 
     std::shared_ptr<AnimatedCharacter> GetStandbyAnimation() const { return standbyAnimation; }
 
     std::shared_ptr<AnimatedCharacter> GetMoveAnimation() const { return moveAnimation; }
 
     std::shared_ptr<AnimatedCharacter> GetKickAnimation() const { return kickAnimation; }
+
+    glm::vec2 GetCenter() const { return center; }
+
+    std::shared_ptr<Util::GameObject> GetChild(){
+        return stepText;
+    }
+
 private:
     HeroState currentState;
     glm::vec2 center;
     const std::shared_ptr<AnimatedCharacter>& standbyAnimation;
     const std::shared_ptr<AnimatedCharacter>& moveAnimation;
     const std::shared_ptr<AnimatedCharacter>& kickAnimation;
+    std::shared_ptr<StepText> stepText;
 };
 
 #endif //HERO_HPP

@@ -14,7 +14,7 @@ public:
     void SetPosition(const glm::vec2& Position) { 
         m_Transform.translation = Position;
         SetCenter();
-     }
+    }
 
     void SetImage(std::string image) { m_Drawable = std::make_shared<Util::Image>(image); }
 

@@ -1,7 +1,9 @@
 #include "AnimatedCharacter.hpp"
 #include "App.hpp"
 
+#include "Enemy.hpp"
 #include "Util/Logger.hpp"
+#include "Util/Text.hpp"
 #include "Wall.hpp"
 #include "Floor.hpp"
 #include <memory>
@@ -10,14 +12,24 @@
 void App::Start() {
     LOG_TRACE("Start");
 
+
+    m_Background = std::make_shared<Background>(GA_RESOURCE_DIR"/Image/Other/Step.png");
+    m_Background->SetVisible(true);
+    m_Background->SetZIndex(10);
+    m_Background->SetPosition({-660,-220});
+    m_Root.AddChild(m_Background);
+
     m_MapLoader.loadMap(GA_RESOURCE_DIR"/Map/Map1.json");
-    m_MapLoader.printMap();
+    // m_MapLoader.printMap();
 
     auto tmp = m_MapLoader.GetMap();
     int tmpInt1, tmpInt2 = 0;
     
+    init_position = glm::vec2(50 - 100 * m_MapLoader.getWidth()/2, -50 + 100 * m_MapLoader.getHeight()/2);
+
     testPtr.resize(m_MapLoader.getHeight()* m_MapLoader.getWidth());
     floorPtr.resize(m_MapLoader.getHeight()* m_MapLoader.getWidth());
+    enemyPtr.resize(m_MapLoader.getHeight()* m_MapLoader.getWidth());
 
 
     std::vector<std::string> heroStandbyImages;
@@ -68,6 +80,7 @@ void App::Start() {
     heroStandby->SetPosition(m_Hero->GetPosition());
     m_Root.AddChild(m_Hero);
 
+
     m_Wall = std::make_shared<Wall>();
     // m_Wall->SetZIndex(1);
     // m_Wall->SetVisible(true);
@@ -86,7 +99,7 @@ void App::Start() {
         LOG_DEBUG("Loading Map...");
         for (int j = 0; j < m_MapLoader.getWidth(); ++j) {
             floorPtr[j + i * m_MapLoader.getWidth()] = std::make_shared<Floor>();
-            floorPtr[j + i * m_MapLoader.getWidth()]->SetPosition({-500 + 100 * j,600 - 100 * i});
+            floorPtr[j + i * m_MapLoader.getWidth()]->SetPosition({init_position.x + 100 * j,init_position.y - 100 * i});
             floorPtr[j + i * m_MapLoader.getWidth()]->SetVisible(true);
             floorPtr[j + i * m_MapLoader.getWidth()]->SetZIndex(0);
             m_Root.AddChild(floorPtr[j + i * m_MapLoader.getWidth()]);
@@ -112,7 +125,7 @@ void App::Start() {
                 case 1:
                     // LOG_DEBUG("Case 0");
                     testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()] = std::make_shared<Wall>();
-                    testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetPosition({-500 + 100 * tmpInt1,600 - 100 * tmpInt2});
+                    testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetPosition({init_position.x + 100 * tmpInt1,init_position.y - 100 * tmpInt2});
                     testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetVisible(true);
                     testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetZIndex(5);
                     m_Root.AddChild(testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]);
@@ -120,13 +133,26 @@ void App::Start() {
                 case 2:
                     // LOG_DEBUG("Case 1");
                     testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()] = std::make_shared<Box>();
-                    testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetPosition({-500 + 100 * tmpInt1, 600 - 100 * tmpInt2});
+                    testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
                     testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetVisible(true);
                     testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetZIndex(1);
                     m_Root.AddChild(testPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]);
                     break;
                 case 3:
-                    m_Hero->SetPosition({-500 + 100 * tmpInt1, 600 - 100 * tmpInt2});
+                    m_Hero->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
+                    break;
+                case 4:
+                    LOG_DEBUG("Case 4");
+                    enemyPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()] = std::make_shared<Enemy>();
+                    enemyPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
+                    enemyPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetVisible(true);
+                    enemyPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->SetZIndex(4);
+                    m_Root.AddChild(enemyPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]);
+                    m_Root.AddChild(enemyPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->GetStandbyAnimation());
+                    m_Root.AddChild(enemyPtr[tmpInt1 + tmpInt2 * m_MapLoader.getWidth()]->GetBeKickedAnimation());
+                    // LOG_DEBUG("index");
+                    // LOG_DEBUG(tmpInt1 + tmpInt2 * m_MapLoader.getWidth());
+                    // LOG_DEBUG("````");
                     break;
                 default:
                     // LOG_DEBUG("Case default");
@@ -139,7 +165,10 @@ void App::Start() {
         tmpInt2++;
         tmpInt1 = 0;
     }
+    
+    LOG_DEBUG(enemyPtr[12]->GetCenter());
     // m_Wall->SetPosition({ m_Hero->GetPosition().x + 200, m_Hero->GetPosition().y});
     // m_Box->SetPosition({ m_Hero->GetPosition().x + 100, m_Hero->GetPosition().y});
+    m_Root.AddChild(m_Hero->GetChild());
     m_CurrentState = State::UPDATE;
 }

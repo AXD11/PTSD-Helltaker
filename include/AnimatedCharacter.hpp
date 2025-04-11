@@ -41,6 +41,11 @@ public:
         auto animation = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
         animation->Play();
     }
+
+    void Inverse(){
+        auto animation = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
+    
+    }
 };
 
 #endif //ANIMATED_CHARACTER_HPP

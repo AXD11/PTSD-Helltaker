@@ -1,7 +1,9 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include "Background.hpp"
 #include "Box.hpp"
+#include "Enemy.hpp"
 #include "Hero.hpp" 
 #include "MapLoader.hpp"
 #include "Wall.hpp"
@@ -54,6 +56,10 @@ private:
 
     std::shared_ptr<AnimatedCharacter> heroKick;
 
+    std::shared_ptr<AnimatedCharacter> enemyStandby;
+
+    std::shared_ptr<AnimatedCharacter> enemyBeKicked;
+
     std::shared_ptr<Wall> m_Wall;
 
     std::shared_ptr<Box> m_Box;
@@ -64,6 +70,10 @@ private:
 
     std::vector<std::shared_ptr<Floor>> floorPtr;
 
+    std::vector<std::shared_ptr<Enemy>> enemyPtr;
+
+    std::shared_ptr<Background> m_Background;
+
 
     bool m_EnterDown = false;
     bool m_Up = false;
@@ -71,6 +81,7 @@ private:
     bool m_Left = false;
     bool m_Right = false;
     int moveStep = 100;
+    glm::vec2 init_position;
 };
 
 #endif

@@ -3,7 +3,6 @@
 
 #include <memory>
 
-#include "Hero.hpp"
 #include "Tile.hpp"
 #include "Wall.hpp"
 
@@ -39,7 +38,7 @@ public:
         SetCenter();
     }
 
-    bool CanMove(Direction position, const std::vector<std::shared_ptr<Tile>>& tiles);
+    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles);
 };
 
 #endif
