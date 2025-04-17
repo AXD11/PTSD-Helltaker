@@ -1,8 +1,10 @@
 #ifndef APP_HPP
 #define APP_HPP
 
+#include "AnimatedCharacter.hpp"
 #include "Background.hpp"
 #include "Box.hpp"
+#include "Devil.hpp"
 #include "Enemy.hpp"
 #include "Hero.hpp" 
 #include "MapLoader.hpp"
@@ -56,9 +58,7 @@ private:
 
     std::shared_ptr<AnimatedCharacter> heroKick;
 
-    std::shared_ptr<AnimatedCharacter> enemyStandby;
-
-    std::shared_ptr<AnimatedCharacter> enemyBeKicked;
+    std::shared_ptr<AnimatedCharacter> heroDead;
 
     std::shared_ptr<Wall> m_Wall;
 
@@ -74,6 +74,11 @@ private:
 
     std::shared_ptr<Background> m_Background;
 
+    std::shared_ptr<Background> blackScreen;
+
+    std::shared_ptr<Devil> m_Devil;
+
+    std::shared_ptr<AnimatedCharacter> eyeCatch;
 
     bool m_EnterDown = false;
     bool m_Up = false;

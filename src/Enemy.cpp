@@ -98,8 +98,8 @@ bool Enemy::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tile
         else if (auto wall = std::dynamic_pointer_cast<Wall>(tile)) {
             if (IsColliding(wall, position)) {
                 SetState(EnemyState::DEAD);
-                LOG_DEBUG("Is Dead? ");
-                LOG_DEBUG(currentState == EnemyState::DEAD);
+                // LOG_DEBUG("Is Dead? ");
+                // LOG_DEBUG(currentState == EnemyState::DEAD);
                 this->SetPosition(glm::vec2(-1000, -1000));
                 return false;
             }
@@ -112,10 +112,10 @@ void Enemy::SetState(EnemyState newState) {
     if (currentState == newState) return;
 
 
-    LOG_DEBUG("Is Standby? ");
-    LOG_DEBUG(newState == EnemyState::STANDBY);
-    LOG_DEBUG("Is BeKick? ");
-    LOG_DEBUG(newState == EnemyState::BEKICKED);
+    // LOG_DEBUG("Is Standby? ");
+    // LOG_DEBUG(newState == EnemyState::STANDBY);
+    // LOG_DEBUG("Is BeKick? ");
+    // LOG_DEBUG(newState == EnemyState::BEKICKED);
     // LOG_DEBUG("Is Dead? ");
     // LOG_DEBUG(newState == EnemyState::DEAD);
     // currentState = newState;

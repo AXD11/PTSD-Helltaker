@@ -20,64 +20,75 @@ void App::Update() {
         m_CurrentState = State::END;
     }
 
+    if (Util::Input::IsKeyPressed(Util::Keycode::R)) {
+        m_MapLoader.ClearMap(testPtr, enemyPtr, m_Root, m_Devil);
+        m_MapLoader.SetMap(init_position, testPtr, enemyPtr, m_Root, m_Hero, m_Devil);
+        m_Hero->SetState(HeroState::STANDBY);
+        blackScreen->SetVisible(false);
+    }
 
-    if (m_Up) {
+
+    if (m_Up && m_Hero->GetStep() > 0) {
         m_Hero->SetCenter();
-        m_Box->SetCenter();
-        LOG_DEBUG(enemyPtr[12]->GetCenter());
-        LOG_DEBUG(m_Hero->GetCenter());
+        // m_Box->SetCenter();
+        // LOG_DEBUG(enemyPtr[12]->GetCenter());
+        // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(1, testPtr) && !m_Hero->MeetEnemy(1, enemyPtr, testPtr)) {
-            LOG_DEBUG("Change to Move");
+            // LOG_DEBUG("Change to Move");
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveUp(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
         }
+        // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
     m_Up = Util::Input::IsKeyDown(Util::Keycode::W);
 
-    if (m_Down) {
+    if (m_Down && m_Hero->GetStep() > 0) {
         m_Hero->SetCenter();
         m_Box->SetCenter();
-        LOG_DEBUG(enemyPtr[12]->GetCenter());
-        LOG_DEBUG(m_Hero->GetCenter());
+        // LOG_DEBUG(enemyPtr[12]->GetCenter());
+        // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(2, testPtr) && !m_Hero->MeetEnemy(2, enemyPtr, testPtr)) {
-            LOG_DEBUG("Change to Move");
+            // LOG_DEBUG("Change to Move");
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveDown(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
         }
+        // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
     m_Down = Util::Input::IsKeyDown(Util::Keycode::S);
 
-    if (m_Left) {
+    if (m_Left && m_Hero->GetStep() > 0) {
         m_Hero->SetCenter();
         m_Box->SetCenter();
-        LOG_DEBUG(enemyPtr[12]->GetCenter());
-        LOG_DEBUG(m_Hero->GetCenter());
+        // LOG_DEBUG(enemyPtr[12]->GetCenter());
+        // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(3, testPtr) && !m_Hero->MeetEnemy(3, enemyPtr, testPtr)) {
-            LOG_DEBUG("Change to Move");
+            // LOG_DEBUG("Change to Move");
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveLeft(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
         }
+        // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
     m_Left = Util::Input::IsKeyDown(Util::Keycode::A);
 
-    if (m_Right) {
+    if (m_Right && m_Hero->GetStep() > 0) {
         m_Hero->SetCenter();
         m_Box->SetCenter();
-        LOG_DEBUG(enemyPtr[12]->GetCenter());
-        LOG_DEBUG(m_Hero->GetCenter());
+        // LOG_DEBUG(enemyPtr[12]->GetCenter());
+        // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(4, testPtr) && !m_Hero->MeetEnemy(4, enemyPtr, testPtr)) {
-            LOG_DEBUG("Change to Move");
+            // LOG_DEBUG("Change to Move");
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->MoveRight(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->GetMoveAnimation()->Play();
         }
+        // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
     m_Right = Util::Input::IsKeyDown(Util::Keycode::D);
 
@@ -87,7 +98,7 @@ void App::Update() {
     {
         m_Hero->GetStandbyAnimation()->SetPosition(m_Hero->GetPosition());
         m_Hero->SetState(HeroState::STANDBY);
-        LOG_DEBUG("Hero change to Standby");
+        // LOG_DEBUG("Hero change to Standby");
         // LOG_DEBUG(m_Hero->GetStandbyAnimation()->IsLooping());
     }
 
@@ -97,10 +108,24 @@ void App::Update() {
             skelton->GetBeKickedAnimation()->SetPosition(skelton->GetPosition());
             // skelton->GetBeKickedAnimation()->Play();
             skelton->SetState(EnemyState::STANDBY);
-            LOG_DEBUG("Skelton change to Standby");
+            // LOG_DEBUG("Skelton change to Standby");
         }
     }
     
+    if (m_Devil->IsNearBy(m_Hero) && m_Hero->GetCurrentState() != HeroState::WIN) {
+        LOG_DEBUG("Devil is near by");
+        eyeCatch->SetCurrentFrame(0);
+        eyeCatch->SetVisible(true);
+        eyeCatch->Play();
+        m_Hero->SetState(HeroState::WIN);
+    }
+
+    if (m_Hero->GetStep() == 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Devil->IsNearBy(m_Hero)) {
+        m_Hero->GetDeadAnimation()->SetPosition({m_Hero->GetPosition().x, m_Hero->GetPosition().y + 232});
+        m_Hero->SetState(HeroState::DEAD);
+        m_Hero->GetDeadAnimation()->Play();
+        blackScreen->SetVisible(true);
+    }
 
     m_Root.Update();
 }

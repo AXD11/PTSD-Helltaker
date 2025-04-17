@@ -4,7 +4,14 @@
 // #include <memory>
 #include <vector>
 #include <string>
-// #include "Tile.hpp"
+#include "Tile.hpp"
+#include "Wall.hpp"
+#include "Box.hpp"
+#include "Enemy.hpp"
+#include "Floor.hpp"
+#include "Devil.hpp"
+#include "Hero.hpp"
+#include "Util/Renderer.hpp"
 // #include "Util/Renderer.hpp"
 
 class MapLoader {
@@ -15,17 +22,36 @@ public:
 
     // void createTileObjects();
 
-    void printMap() const;
+    void PrintMap() const;
 
+    void SetMap(
+        const glm::vec2& init_position,
+        std::vector<std::shared_ptr<Tile>>& tilePtr,
+        std::vector<std::shared_ptr<Enemy>>& enemyPtr,
+        Util::Renderer& m_Root,
+        std::shared_ptr<Hero>& m_Hero,
+        std::shared_ptr<Devil>& m_Devil
+    );
+
+    void ClearMap(
+        std::vector<std::shared_ptr<Tile>>& tilePtr,
+        std::vector<std::shared_ptr<Enemy>>& enemyPtr,
+        Util::Renderer& m_Root,
+        std::shared_ptr<Devil>& m_Devil
+    );
+
+    std::vector<std::vector<int>> GetMap() { return tiles; }
+    
     [[nodiscard]] int getWidth() const { return width; }
 
     [[nodiscard]] int getHeight() const { return height; }
 
-    std::vector<std::vector<int>> GetMap() { return tiles; }
+    [[nodiscard]] int getStep() const { return step; }
 
 private:
     int width;
     int height;
+    int step;
     std::vector<std::vector<int>> tiles;
     // std::vector<std::vector<Tile*>> tileObjects;
     // std::shared_ptr<Util::Renderer> Root;

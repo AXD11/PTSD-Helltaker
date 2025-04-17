@@ -7,15 +7,16 @@
 #include <glm/fwd.hpp>
 #include <memory>
 
-Hero::Hero(const std::string image, const std::shared_ptr<AnimatedCharacter>& standbyAnimation, const std::shared_ptr<AnimatedCharacter>& moveAnimation, const std::shared_ptr<AnimatedCharacter>& kickAnimation)
+Hero::Hero(const std::string image, std::shared_ptr<AnimatedCharacter>& standbyAnimation, std::shared_ptr<AnimatedCharacter>& moveAnimation, std::shared_ptr<AnimatedCharacter>& kickAnimation, std::shared_ptr<AnimatedCharacter>& deadAnimation)
 : currentState(HeroState::STANDBY),
   standbyAnimation(standbyAnimation),
   moveAnimation(moveAnimation),
-  kickAnimation(kickAnimation)
+  kickAnimation(kickAnimation),
+  deadAnimation(deadAnimation)
 {
     SetImage(image);
     SetCenter();
-    stepText = std::make_shared<StepText>();
+    stepText = std::make_shared<StepText>(step);
 }
 
 bool Hero::IsColliding(const std::shared_ptr<Wall>& other, int position) const {
@@ -114,6 +115,7 @@ bool Hero::MeetEnemy(int position, const std::vector<std::shared_ptr<Enemy>>& en
                 skelton->GetBeKickedAnimation()->Play();
                 skelton->Move(100, position);
             }
+            SetLevelStep(step - 1);
             return true;
         }
     }
@@ -125,18 +127,19 @@ bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles
         if (auto box = std::dynamic_pointer_cast<Box>(tile)) {
             if (IsColliding(box, position)) {
                 if (box->CanMove(position, tiles)) {
-                    LOG_DEBUG("Change to Kick");
+                    // LOG_DEBUG("Change to Kick");
                     GetKickAnimation()->SetCurrentFrame(0);
                     SetState(HeroState::KICK);
                     GetKickAnimation()->Play();
                     box->Move(100, position);
-                    
                 }
+                SetLevelStep(step - 1);
                 return false;
             }
         }
         else if (auto wall = std::dynamic_pointer_cast<Wall>(tile)) {
             if (IsColliding(wall, position)) {
+                
                 return false;
             }
         }
@@ -158,6 +161,7 @@ void Hero::SetState(HeroState newState) {
     standbyAnimation->SetVisible(newState == HeroState::STANDBY);
     moveAnimation->SetVisible(newState == HeroState::MOVE);
     kickAnimation->SetVisible(newState == HeroState::KICK);
+    deadAnimation->SetVisible(newState == HeroState::DEAD);
 }
 
 // void Hero::update() {

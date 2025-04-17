@@ -8,7 +8,7 @@
 class Wall : public Tile {
 
 public:
-    Wall();
+    Wall(std::string type);
 };
 
 #endif

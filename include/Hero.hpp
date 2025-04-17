@@ -18,6 +18,8 @@ enum class HeroState {
     STANDBY,
     MOVE,
     KICK,
+    DEAD,
+    WIN,
 };
 
 enum class Direction {
@@ -30,7 +32,7 @@ enum class Direction {
 class Hero : public Util::GameObject {
 
 public:
-    Hero(const std::string image, const std::shared_ptr<AnimatedCharacter>& standbyAnimation, const std::shared_ptr<AnimatedCharacter>& moveAnimation, const std::shared_ptr<AnimatedCharacter>& kickAnimation);
+    Hero(const std::string image, std::shared_ptr<AnimatedCharacter>& standbyAnimation, std::shared_ptr<AnimatedCharacter>& moveAnimation, std::shared_ptr<AnimatedCharacter>& kickAnimation, std::shared_ptr<AnimatedCharacter>& deadAnimation);
 
     [[nodiscard]] const glm::vec2& GetPosition() const { return m_Transform.translation; }
 
@@ -39,6 +41,8 @@ public:
         standbyAnimation->SetPosition(m_Transform.translation);
         moveAnimation->SetPosition(m_Transform.translation);
         kickAnimation->SetPosition(m_Transform.translation);
+        deadAnimation->SetPosition({m_Transform.translation.x, m_Transform.translation.y});
+        SetLevelStep(step - 1);
     }
 
     [[nodiscard]] HeroState getState() const;
@@ -56,7 +60,6 @@ public:
     void MoveUp(int moveStep) { 
         SetPosition(glm::vec2(m_Transform.translation.x, m_Transform.translation.y + moveStep));
         SetCenter();
-        // kickAnimation->IfAnimationEnds();
     }
 
     void MoveDown(int moveStep) { 
@@ -67,11 +70,20 @@ public:
     void MoveRight(int moveStep) {
         SetPosition(glm::vec2(m_Transform.translation.x + moveStep, m_Transform.translation.y));
         SetCenter();
+        SetScale(glm::vec2(1, 1));
     }
 
     void MoveLeft(int moveStep) { 
         SetPosition(glm::vec2(m_Transform.translation.x - moveStep, m_Transform.translation.y));
         SetCenter();
+        SetScale(glm::vec2(-1, -1));
+    }
+
+    void SetScale(glm::vec2 scale){
+        standbyAnimation->GetTransform().scale = scale;
+        moveAnimation->GetTransform().scale = scale;
+        kickAnimation->GetTransform().scale = scale;
+        deadAnimation->GetTransform().scale = scale;
     }
 
     bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles);
@@ -84,11 +96,13 @@ public:
 
     bool IsColliding(const std::shared_ptr<Enemy>& other, int position) const;
 
-    std::shared_ptr<AnimatedCharacter> GetStandbyAnimation() const { return standbyAnimation; }
+    std::shared_ptr<AnimatedCharacter> GetStandbyAnimation()  { return standbyAnimation; }
 
-    std::shared_ptr<AnimatedCharacter> GetMoveAnimation() const { return moveAnimation; }
+    std::shared_ptr<AnimatedCharacter> GetMoveAnimation()  { return moveAnimation; }
 
-    std::shared_ptr<AnimatedCharacter> GetKickAnimation() const { return kickAnimation; }
+    std::shared_ptr<AnimatedCharacter> GetKickAnimation()  { return kickAnimation; }
+
+    std::shared_ptr<AnimatedCharacter> GetDeadAnimation()  { return deadAnimation; }
 
     glm::vec2 GetCenter() const { return center; }
 
@@ -96,12 +110,23 @@ public:
         return stepText;
     }
 
+    void SetLevelStep(int step){
+        this->step = step;
+        stepText->SetStepText(step);
+    }
+
+    int GetStep(){
+        return step;
+    }
+
 private:
     HeroState currentState;
     glm::vec2 center;
-    const std::shared_ptr<AnimatedCharacter>& standbyAnimation;
-    const std::shared_ptr<AnimatedCharacter>& moveAnimation;
-    const std::shared_ptr<AnimatedCharacter>& kickAnimation;
+    std::shared_ptr<AnimatedCharacter>& standbyAnimation;
+    std::shared_ptr<AnimatedCharacter>& moveAnimation;
+    std::shared_ptr<AnimatedCharacter>& kickAnimation;
+    std::shared_ptr<AnimatedCharacter>& deadAnimation;
+    int step = -1;
     std::shared_ptr<StepText> stepText;
 };
 
