@@ -25,6 +25,8 @@ void App::Update() {
         m_MapLoader.SetMap(init_position, testPtr, enemyPtr, m_Root, m_Hero, m_Devil);
         m_Hero->SetState(HeroState::STANDBY);
         blackScreen->SetVisible(false);
+        m_Hero->SetState(HeroState::STANDBY);
+        eyeCatch->SetVisible(false);
     }
 
 

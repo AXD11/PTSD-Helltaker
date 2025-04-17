@@ -132,8 +132,8 @@ bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles
                     SetState(HeroState::KICK);
                     GetKickAnimation()->Play();
                     box->Move(100, position);
+                    SetLevelStep(step - 1);
                 }
-                SetLevelStep(step - 1);
                 return false;
             }
         }
