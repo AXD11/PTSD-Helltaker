@@ -46,10 +46,10 @@ void App::Update() {
         // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(1, testPtr) && !m_Hero->MeetEnemy(1, enemyPtr, testPtr)) {
             // LOG_DEBUG("Change to Move");
-            m_Hero->SetState(HeroState::MOVE);
-            m_Hero->MoveUp(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
+            m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
+            m_Hero->MoveUp(moveStep);
         }
         // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
@@ -62,10 +62,10 @@ void App::Update() {
         // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(2, testPtr) && !m_Hero->MeetEnemy(2, enemyPtr, testPtr)) {
             // LOG_DEBUG("Change to Move");
-            m_Hero->SetState(HeroState::MOVE);
-            m_Hero->MoveDown(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
+            m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
+            m_Hero->MoveDown(moveStep);
         }
         // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
@@ -78,10 +78,10 @@ void App::Update() {
         // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(3, testPtr) && !m_Hero->MeetEnemy(3, enemyPtr, testPtr)) {
             // LOG_DEBUG("Change to Move");
-            m_Hero->SetState(HeroState::MOVE);
-            m_Hero->MoveLeft(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
+            m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
+            m_Hero->MoveLeft(moveStep);
         }
         // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
@@ -94,10 +94,10 @@ void App::Update() {
         // LOG_DEBUG(m_Hero->GetCenter());
         if (m_Hero->CanMove(4, testPtr) && !m_Hero->MeetEnemy(4, enemyPtr, testPtr)) {
             // LOG_DEBUG("Change to Move");
-            m_Hero->SetState(HeroState::MOVE);
-            m_Hero->MoveRight(moveStep);
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
+            m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
+            m_Hero->MoveRight(moveStep);
         }
         // m_Hero->SetLevelStep(m_Hero->GetStep() - 1);
     }
@@ -109,6 +109,7 @@ void App::Update() {
          m_Hero->GetCurrentState() != HeroState::STANDBY) 
     {
         m_Hero->GetStandbyAnimation()->SetPosition(m_Hero->GetPosition());
+        m_Hero->GetStandbyAnimation()->SetCurrentFrame(0);
         m_Hero->SetState(HeroState::STANDBY);
         // LOG_DEBUG("Hero change to Standby");
         // LOG_DEBUG(m_Hero->GetStandbyAnimation()->IsLooping());

@@ -126,14 +126,14 @@ bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles
     for (const auto& tile : tiles) {
         if (auto box = std::dynamic_pointer_cast<Box>(tile)) {
             if (IsColliding(box, position)) {
+                GetKickAnimation()->SetCurrentFrame(0);
+                SetState(HeroState::KICK);
+                GetKickAnimation()->Play();
                 if (box->CanMove(position, tiles)) {
                     // LOG_DEBUG("Change to Kick");
-                    GetKickAnimation()->SetCurrentFrame(0);
-                    SetState(HeroState::KICK);
-                    GetKickAnimation()->Play();
                     box->Move(100, position);
-                    SetLevelStep(step - 1);
                 }
+                SetLevelStep(step - 1);
                 return false;
             }
         }
