@@ -103,9 +103,9 @@ void App::Update() {
     }
     m_Right = Util::Input::IsKeyDown(Util::Keycode::D);
 
-    if ((m_Hero->GetMoveAnimation()->IfAnimationEnds() || 
-         m_Hero->GetKickAnimation()->IfAnimationEnds())&&
+    if ((m_Hero->GetMoveAnimation()->IfAnimationEnds() || m_Hero->GetKickAnimation()->IfAnimationEnds()) &&
          m_Hero->GetCurrentState() != HeroState::WIN &&
+         m_Hero->GetCurrentState() != HeroState::DEAD &&
          m_Hero->GetCurrentState() != HeroState::STANDBY) 
     {
         m_Hero->GetStandbyAnimation()->SetPosition(m_Hero->GetPosition());
@@ -136,6 +136,7 @@ void App::Update() {
 
     if (m_Hero->GetStep() == 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Devil->IsNearBy(m_Hero)) {
         m_Hero->GetDeadAnimation()->SetPosition({m_Hero->GetPosition().x, m_Hero->GetPosition().y + 232});
+        m_Hero->GetDeadAnimation()->SetCurrentFrame(0);
         m_Hero->SetState(HeroState::DEAD);
         m_Hero->GetDeadAnimation()->Play();
         blackScreen->SetVisible(true);

@@ -84,7 +84,7 @@ void App::Start() {
     }
 
     // AnimatedCharacter heroMove(heroMoveImages, 166, false);
-    heroMove = std::make_shared<AnimatedCharacter>(heroMoveImages, 60, false);
+    heroMove = std::make_shared<AnimatedCharacter>(heroMoveImages, 66, false);
     heroMove->SetZIndex(10);
     heroMove->SetVisible(false);
     m_Root.AddChild(heroMove);
