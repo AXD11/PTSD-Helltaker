@@ -39,7 +39,6 @@ void App::Update() {
         LOG_DEBUG(eyeCatch->IfAnimationEnds());
     }
 
-
     if (m_Up && m_Hero->GetStep() > 0) {
         m_Hero->SetCenter();
         // m_Box->SetCenter();
@@ -142,9 +141,14 @@ void App::Update() {
         blackScreen->SetVisible(true);
     }
 
-    if ( eyeCatch->IfAnimationEnds()){
-        LOG_DEBUG("SetInvisible");
+    if (eyeCatch->IfAnimationEnds()){
         eyeCatch->SetVisible(false);
+    }
+    
+    if (m_Hero->GetDeadAnimation()->IfAnimationEnds() && m_Hero->GetCurrentState() == HeroState::DEAD && !reset) {
+        LOG_DEBUG("HERO DEAD ANIMATION END");
+        LOG_DEBUG(m_Hero->GetDeadAnimation()->IfAnimationEnds());
+        reset = true;
     }
 
     m_Root.Update();

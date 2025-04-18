@@ -15,7 +15,7 @@ void App::Start() {
 
     m_Background = std::make_shared<Background>(GA_RESOURCE_DIR"/Image/Other/Step.png");
     m_Background->SetVisible(true);
-    m_Background->SetZIndex(97);
+    m_Background->SetZIndex(96);
     m_Background->SetPosition({-660,-220});
     m_Background->GetTransform().scale = {-1, 1};
     m_Root.AddChild(m_Background);
