@@ -49,7 +49,7 @@ public:
 
     [[nodiscard]] DevilState getState() const;
 
-    bool IsNearBy(const std::shared_ptr<Hero>& other) const{
+    bool IsNearBy(const std::shared_ptr<Hero>& other) {
         // std::cout << "Hero: {" << other->GetCenter().x << ", " << other->GetCenter().y << "} Devil: {" << center.x << ", " << center.y << "}" << std::endl;
         if (glm::vec2{center.x, center.y + 100} == other->GetCenter()
             || glm::vec2{center.x, center.y - 100} == other->GetCenter()

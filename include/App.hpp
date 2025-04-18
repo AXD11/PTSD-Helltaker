@@ -86,6 +86,7 @@ private:
     bool m_Left = false;
     bool m_Right = false;
     int moveStep = 100;
+    bool reset = false;
     glm::vec2 init_position;
 };
 

@@ -15,7 +15,7 @@ void App::Start() {
 
     m_Background = std::make_shared<Background>(GA_RESOURCE_DIR"/Image/Other/Step.png");
     m_Background->SetVisible(true);
-    m_Background->SetZIndex(99);
+    m_Background->SetZIndex(97);
     m_Background->SetPosition({-660,-220});
     m_Background->GetTransform().scale = {-1, 1};
     m_Root.AddChild(m_Background);
@@ -75,7 +75,7 @@ void App::Start() {
     LOG_DEBUG(heroStandbyImages.size());
     // AnimatedCharacter heroStandby(heroStandbyImages, 83, true);
     heroStandby = std::make_shared<AnimatedCharacter>(heroStandbyImages, 83, true);
-    heroStandby->SetZIndex(5);
+    heroStandby->SetZIndex(10);
     heroStandby->SetVisible(true);
     m_Root.AddChild(heroStandby);
 
@@ -85,7 +85,7 @@ void App::Start() {
 
     // AnimatedCharacter heroMove(heroMoveImages, 166, false);
     heroMove = std::make_shared<AnimatedCharacter>(heroMoveImages, 60, false);
-    heroMove->SetZIndex(5);
+    heroMove->SetZIndex(10);
     heroMove->SetVisible(false);
     m_Root.AddChild(heroMove);
 
@@ -95,7 +95,7 @@ void App::Start() {
 
     // AnimatedCharacter heroKick(heroKickImages, 166, false);
     heroKick = std::make_shared<AnimatedCharacter>(heroKickImages, 20, false);
-    heroKick->SetZIndex(5);
+    heroKick->SetZIndex(10);
     heroKick->SetVisible(false);
     m_Root.AddChild(heroKick);
 

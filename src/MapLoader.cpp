@@ -1,5 +1,6 @@
 #include "MapLoader.hpp"
 #include "Devil.hpp"
+#include "Hero.hpp"
 #include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
 #include <iostream>
@@ -90,10 +91,11 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     break;
                 case 3:
                     m_Hero->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
+                    m_Hero->SetCenter();
                     m_Hero->SetLevelStep(step);
                     break;
                 case 4:
-                    LOG_DEBUG("Case 4");
+                    // LOG_DEBUG("Case 4");
                     enemyPtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Enemy>();
                     enemyPtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
                     enemyPtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
@@ -131,13 +133,13 @@ void MapLoader::ClearMap(std::vector<std::shared_ptr<Tile>>& tilePtr, std::vecto
     if (m_Devil != nullptr) {
         m_Root.RemoveChild(m_Devil);
         m_Root.RemoveChild(m_Devil->GetStandbyAnimation());
-        m_Devil.reset();
+        // m_Devil.reset();
     }
 
     for (auto& tile : tilePtr) {
         if (tile != nullptr) {
             m_Root.RemoveChild(tile);
-            tile.reset();
+            // tile.reset();
         }
     }
 
@@ -146,7 +148,7 @@ void MapLoader::ClearMap(std::vector<std::shared_ptr<Tile>>& tilePtr, std::vecto
             m_Root.RemoveChild(enemy);
             m_Root.RemoveChild(enemy->GetStandbyAnimation());
             m_Root.RemoveChild(enemy->GetBeKickedAnimation());
-            enemy.reset();
+            // enemy.reset();
         }
     }
 }

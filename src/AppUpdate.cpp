@@ -21,12 +21,22 @@ void App::Update() {
     }
 
     if (Util::Input::IsKeyPressed(Util::Keycode::R)) {
+        // m_MapLoader.loadMap(GA_RESOURCE_DIR"/Map/Map1.json");
+
+        LOG_DEBUG("123HERO STANDBY?");
+        LOG_DEBUG(m_Hero->GetCurrentState() == HeroState::STANDBY);
+        m_Hero->SetState(HeroState::STANDBY);
         m_MapLoader.ClearMap(testPtr, enemyPtr, m_Root, m_Devil);
         m_MapLoader.SetMap(init_position, testPtr, enemyPtr, m_Root, m_Hero, m_Devil);
-        m_Hero->SetState(HeroState::STANDBY);
         blackScreen->SetVisible(false);
-        m_Hero->SetState(HeroState::STANDBY);
-        eyeCatch->SetVisible(false);
+        // eyeCatch->SetVisible(false);
+
+        reset = false;
+
+        LOG_DEBUG("HERO STANDBY?");
+        LOG_DEBUG(m_Hero->GetCurrentState() == HeroState::STANDBY);
+        LOG_DEBUG("EYECATCH ANIMATION END?");
+        LOG_DEBUG(eyeCatch->IfAnimationEnds());
     }
 
 
@@ -96,6 +106,7 @@ void App::Update() {
 
     if ((m_Hero->GetMoveAnimation()->IfAnimationEnds() || 
          m_Hero->GetKickAnimation()->IfAnimationEnds())&&
+         m_Hero->GetCurrentState() != HeroState::WIN &&
          m_Hero->GetCurrentState() != HeroState::STANDBY) 
     {
         m_Hero->GetStandbyAnimation()->SetPosition(m_Hero->GetPosition());
@@ -114,12 +125,14 @@ void App::Update() {
         }
     }
     
-    if (m_Devil->IsNearBy(m_Hero) && m_Hero->GetCurrentState() != HeroState::WIN) {
+    if (m_Devil->IsNearBy(m_Hero) && !reset) {
+        reset = true;
         LOG_DEBUG("Devil is near by");
+        // m_Hero->SetState(HeroState::WIN);
+        // LOG_DEBUG(m_Hero->GetCurrentState() == HeroState::WIN);
         eyeCatch->SetCurrentFrame(0);
         eyeCatch->SetVisible(true);
         eyeCatch->Play();
-        m_Hero->SetState(HeroState::WIN);
     }
 
     if (m_Hero->GetStep() == 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Devil->IsNearBy(m_Hero)) {
@@ -127,6 +140,11 @@ void App::Update() {
         m_Hero->SetState(HeroState::DEAD);
         m_Hero->GetDeadAnimation()->Play();
         blackScreen->SetVisible(true);
+    }
+
+    if (m_Devil->IsNearBy(m_Hero) && eyeCatch->IfAnimationEnds()){
+        LOG_DEBUG("SetInvisible");
+        eyeCatch->SetVisible(false);
     }
 
     m_Root.Update();
