@@ -20,7 +20,7 @@ void App::Update() {
         m_CurrentState = State::END;
     }
 
-    if (Util::Input::IsKeyPressed(Util::Keycode::R)) {
+    if (Util::Input::IsKeyPressed(Util::Keycode::R) || reset) {
         // m_MapLoader.loadMap(GA_RESOURCE_DIR"/Map/Map1.json");
 
         LOG_DEBUG("123HERO STANDBY?");
@@ -142,7 +142,7 @@ void App::Update() {
         blackScreen->SetVisible(true);
     }
 
-    if (m_Devil->IsNearBy(m_Hero) && eyeCatch->IfAnimationEnds()){
+    if ( eyeCatch->IfAnimationEnds()){
         LOG_DEBUG("SetInvisible");
         eyeCatch->SetVisible(false);
     }
