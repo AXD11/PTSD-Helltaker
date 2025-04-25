@@ -12,6 +12,11 @@
 MapLoader::MapLoader() : width(0), height(0) {}
 
 bool MapLoader::loadMap(const std::string& fileName) {
+    tiles.clear();
+    width = 0;
+    height = 0;
+    step = -1;
+
     std::ifstream file(fileName);
     if (!file.is_open()) {
         std::cerr << "Failed to open file: " << fileName << std::endl;
@@ -57,7 +62,7 @@ void MapLoader::PrintMap() const {
     }
 }
 
-void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Hero>& m_Hero, std::shared_ptr<Devil>& m_Devil) {
+void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_ptr<Floor>>& floorPtr, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Hero>& m_Hero, std::shared_ptr<Devil>& m_Devil) {
     int tmpInt1 = 0, tmpInt2 = 0;
     for (const auto& row : tiles) {
         // LOG_DEBUG("Loading Map...");
@@ -119,6 +124,11 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     // LOG_DEBUG("Case default");
                     break;
             }
+            floorPtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Floor>();
+            floorPtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
+            floorPtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
+            floorPtr[tmpInt1 + tmpInt2 * width]->SetZIndex(0);
+            m_Root.AddChild(floorPtr[tmpInt1 + tmpInt2 * width]);
             tmpInt1++;
         }
         // break;
@@ -129,17 +139,24 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
 }
 
 
-void MapLoader::ClearMap(std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Devil>& m_Devil) {
+void MapLoader::ClearMap(std::vector<std::shared_ptr<Floor>>& floorPtr, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Devil>& m_Devil) {
     if (m_Devil != nullptr) {
         m_Root.RemoveChild(m_Devil);
         m_Root.RemoveChild(m_Devil->GetStandbyAnimation());
-        // m_Devil.reset();
+        m_Devil.reset();
+    }
+
+    for (auto& floor : floorPtr) {
+        if (floor != nullptr) {
+            m_Root.RemoveChild(floor);
+            floor.reset();
+        }
     }
 
     for (auto& tile : tilePtr) {
         if (tile != nullptr) {
             m_Root.RemoveChild(tile);
-            // tile.reset();
+            tile.reset();
         }
     }
 
@@ -148,7 +165,9 @@ void MapLoader::ClearMap(std::vector<std::shared_ptr<Tile>>& tilePtr, std::vecto
             m_Root.RemoveChild(enemy);
             m_Root.RemoveChild(enemy->GetStandbyAnimation());
             m_Root.RemoveChild(enemy->GetBeKickedAnimation());
-            // enemy.reset();
+            enemy.reset();
         }
     }
+
+    LOG_DEBUG("Clear Map");
 }

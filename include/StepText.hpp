@@ -8,7 +8,7 @@
 
 class StepText : public Util::GameObject {
 public:
-    StepText(int step):GameObject(std::make_unique<Util::Text>("/Users/linshengjie/Desktop/PTSD-Helltaker/Resources/fonts/Attack.ttf", 50, std::to_string(step), Util::Color::FromName(Util::Colors::WHITE)), 97){
+    StepText(int step):GameObject(std::make_unique<Util::Text>("/Users/linshengjie/Desktop/OOP/PTSD-Helltaker/Resources/fonts/Attack.ttf", 50, std::to_string(step), Util::Color::FromName(Util::Colors::WHITE)), 97){
         m_Transform.translation = {-685.0F, -300.F};
     }
 

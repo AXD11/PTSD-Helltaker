@@ -26,6 +26,7 @@ public:
 
     void SetMap(
         const glm::vec2& init_position,
+        std::vector<std::shared_ptr<Floor>>& floorPtr,
         std::vector<std::shared_ptr<Tile>>& tilePtr,
         std::vector<std::shared_ptr<Enemy>>& enemyPtr,
         Util::Renderer& m_Root,
@@ -34,6 +35,7 @@ public:
     );
 
     void ClearMap(
+        std::vector<std::shared_ptr<Floor>>& floorPtr,
         std::vector<std::shared_ptr<Tile>>& tilePtr,
         std::vector<std::shared_ptr<Enemy>>& enemyPtr,
         Util::Renderer& m_Root,
@@ -53,8 +55,6 @@ private:
     int height;
     int step;
     std::vector<std::vector<int>> tiles;
-    // std::vector<std::vector<Tile*>> tileObjects;
-    // std::shared_ptr<Util::Renderer> Root;
 };
 
 #endif // MAPLOADER_HPP

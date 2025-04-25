@@ -60,10 +60,6 @@ private:
 
     std::shared_ptr<AnimatedCharacter> heroDead;
 
-    std::shared_ptr<Wall> m_Wall;
-
-    std::shared_ptr<Box> m_Box;
-
     MapLoader m_MapLoader;
 
     std::vector<std::shared_ptr<Tile>> testPtr;
@@ -87,6 +83,8 @@ private:
     bool m_Right = false;
     int moveStep = 100;
     bool reset = false;
+    int currentLevel = 7;
+    bool nextLevel = false;
     glm::vec2 init_position;
 };
 

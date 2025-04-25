@@ -2,6 +2,7 @@
 #include "App.hpp"
 
 #include "Enemy.hpp"
+#include "MapLoader.hpp"
 #include "Util/Logger.hpp"
 #include "Util/Text.hpp"
 #include "Wall.hpp"
@@ -28,7 +29,7 @@ void App::Start() {
 
 
 
-    m_MapLoader.loadMap(GA_RESOURCE_DIR"/Map/Map1.json");
+    m_MapLoader.loadMap(GA_RESOURCE_DIR"/Map/Map" + std::to_string(currentLevel) + ".json");
     // m_MapLoader.printMap();
 
     auto tmp = m_MapLoader.GetMap();
@@ -116,33 +117,20 @@ void App::Start() {
     m_Root.AddChild(m_Hero);
 
 
-    // m_Wall = std::make_shared<Wall>();
-    // m_Wall->SetZIndex(1);
-    // m_Wall->SetVisible(true);
-    // m_Wall->SetPosition({ m_Hero->GetPosition().x, m_Hero->GetPosition().y + 100});
-    // m_Wall->SetCenter();
-    // m_Root.AddChild(m_Wall);
 
-    m_Box = std::make_shared<Box>();
-    // m_Box->SetZIndex(1);
-    // m_Box->SetVisible(true);
-    // m_Box->SetPosition({ m_Hero->GetPosition().x + 100, m_Hero->GetPosition().y});
-    // m_Box->SetCenter();
-    // m_Root.AddChild(m_Box);
+    // for (int i = 0; i < m_MapLoader.getHeight(); ++i) {
+    //     // LOG_DEBUG("Loading FLoor...");
+    //     for (int j = 0; j < m_MapLoader.getWidth(); ++j) {
+    //         floorPtr[j + i * m_MapLoader.getWidth()] = std::make_shared<Floor>();
+    //         floorPtr[j + i * m_MapLoader.getWidth()]->SetPosition({init_position.x + 100 * j,init_position.y - 100 * i});
+    //         floorPtr[j + i * m_MapLoader.getWidth()]->SetVisible(true);
+    //         floorPtr[j + i * m_MapLoader.getWidth()]->SetZIndex(0);
+    //         m_Root.AddChild(floorPtr[j + i * m_MapLoader.getWidth()]);
+    //     }
+    //     // break;
+    // }
 
-    for (int i = 0; i < m_MapLoader.getHeight(); ++i) {
-        // LOG_DEBUG("Loading FLoor...");
-        for (int j = 0; j < m_MapLoader.getWidth(); ++j) {
-            floorPtr[j + i * m_MapLoader.getWidth()] = std::make_shared<Floor>();
-            floorPtr[j + i * m_MapLoader.getWidth()]->SetPosition({init_position.x + 100 * j,init_position.y - 100 * i});
-            floorPtr[j + i * m_MapLoader.getWidth()]->SetVisible(true);
-            floorPtr[j + i * m_MapLoader.getWidth()]->SetZIndex(0);
-            m_Root.AddChild(floorPtr[j + i * m_MapLoader.getWidth()]);
-        }
-        // break;
-    }
-
-    m_MapLoader.SetMap(init_position, testPtr, enemyPtr, m_Root, m_Hero, m_Devil);
+    m_MapLoader.SetMap(init_position, floorPtr, testPtr, enemyPtr, m_Root, m_Hero, m_Devil);
 
     // tmpInt1 = 0;
     // tmpInt2 = 0;
