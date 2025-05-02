@@ -31,7 +31,7 @@ public:
             LOG_ERROR("Devil name is not valid");
         }
 
-        standbyAnimation = std::make_shared<AnimatedCharacter>(devilStandbyImages, 83, true);
+        standbyAnimation = std::make_shared<AnimatedCharacter>(devilStandbyImages, true, 83, true);
         standbyAnimation->SetZIndex(4);
         standbyAnimation->SetVisible(true);
 

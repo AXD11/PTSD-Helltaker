@@ -7,6 +7,7 @@
 #include "Tile.hpp"
 #include "Wall.hpp"
 #include "Box.hpp"
+#include "Spike.hpp"
 #include "Enemy.hpp"
 #include "Floor.hpp"
 #include "Devil.hpp"

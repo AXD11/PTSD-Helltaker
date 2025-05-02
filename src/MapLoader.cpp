@@ -1,6 +1,7 @@
 #include "MapLoader.hpp"
 #include "Devil.hpp"
 #include "Hero.hpp"
+#include "Spike.hpp"
 #include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
 #include <iostream>
@@ -65,21 +66,9 @@ void MapLoader::PrintMap() const {
 void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_ptr<Floor>>& floorPtr, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Hero>& m_Hero, std::shared_ptr<Devil>& m_Devil) {
     int tmpInt1 = 0, tmpInt2 = 0;
     for (const auto& row : tiles) {
-        // LOG_DEBUG("Loading Map...");
         for (int tile : row) {
-            // LOG_DEBUG(tile);
-            // std::cout << "tmpInt1:" << tmpInt1 << ", tmpInt2:" << tmpInt2 << std::endl;
             switch (tile) {
-                case 9:
-                    // LOG_DEBUG("Case 0");
-                    tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Wall>("Air");
-                    tilePtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1,init_position.y - 100 * tmpInt2});
-                    tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
-                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(5);
-                    m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
-                    break;
                 case 1:
-                    // LOG_DEBUG("Case 0");
                     tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Wall>("Wall2");
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1,init_position.y - 100 * tmpInt2});
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
@@ -87,7 +76,6 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
                     break;
                 case 2:
-                    // LOG_DEBUG("Case 1");
                     tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Box>();
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
@@ -100,7 +88,6 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     m_Hero->SetLevelStep(step);
                     break;
                 case 4:
-                    // LOG_DEBUG("Case 4");
                     enemyPtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Enemy>();
                     enemyPtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
                     enemyPtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
@@ -108,9 +95,6 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     m_Root.AddChild(enemyPtr[tmpInt1 + tmpInt2 * width]);
                     m_Root.AddChild(enemyPtr[tmpInt1 + tmpInt2 * width]->GetStandbyAnimation());
                     m_Root.AddChild(enemyPtr[tmpInt1 + tmpInt2 * width]->GetBeKickedAnimation());
-                    // LOG_DEBUG("index");
-                    // LOG_DEBUG(tmpInt1 + tmpInt2 * m_MapLoader.getWidth());
-                    // LOG_DEBUG("````");
                     break;
                 case 5:
                     m_Devil = std::make_shared<Devil>("Monica");
@@ -120,8 +104,22 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     m_Root.AddChild(m_Devil);
                     m_Root.AddChild(m_Devil->GetStandbyAnimation());
                     break;
+                case 6:
+                    tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Spike>(true, false, glm::vec2(init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2));
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(3);
+                    m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
+                    m_Root.AddChild(std::dynamic_pointer_cast<Spike>(tilePtr[tmpInt1 + tmpInt2 * width])->GetOnAnimation());
+                    m_Root.AddChild(std::dynamic_pointer_cast<Spike>(tilePtr[tmpInt1 + tmpInt2 * width])->GetOffAnimation());
+                    break;
+                case 9:
+                    tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Wall>("Air");
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1,init_position.y - 100 * tmpInt2});
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(5);
+                    m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
+                    break;
                 default:
-                    // LOG_DEBUG("Case default");
                     break;
             }
             floorPtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Floor>();
@@ -131,8 +129,6 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
             m_Root.AddChild(floorPtr[tmpInt1 + tmpInt2 * width]);
             tmpInt1++;
         }
-        // break;
-        // LOG_DEBUG("-----------------");
         tmpInt2++;
         tmpInt1 = 0;
     }
@@ -156,6 +152,10 @@ void MapLoader::ClearMap(std::vector<std::shared_ptr<Floor>>& floorPtr, std::vec
     for (auto& tile : tilePtr) {
         if (tile != nullptr) {
             m_Root.RemoveChild(tile);
+            if (auto spike = std::dynamic_pointer_cast<Spike>(tile)) {
+                m_Root.RemoveChild(spike->GetOnAnimation());
+                m_Root.RemoveChild(spike->GetOffAnimation());
+            }
             tile.reset();
         }
     }

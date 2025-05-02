@@ -34,6 +34,8 @@ void App::Update() {
         } 
         m_MapLoader.SetMap(init_position, floorPtr, testPtr, enemyPtr, m_Root, m_Hero, m_Devil);
 
+        stepLock = m_Hero->GetStep();
+
         blackScreen->SetVisible(false);
     }
 
@@ -52,6 +54,7 @@ void App::Update() {
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
             m_Hero->MoveDown(moveStep);
+
         }
     }
 
@@ -61,6 +64,7 @@ void App::Update() {
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
             m_Hero->MoveLeft(moveStep);
+
         }
     }
 
@@ -117,6 +121,19 @@ void App::Update() {
     if (m_Hero->GetDeadAnimation()->IfAnimationEnds() && m_Hero->GetCurrentState() == HeroState::DEAD && !reset) {
         reset = true;
     }
+
+    if ((m_Up || m_Right || m_Left || m_Down) && stepLock != m_Hero->GetStep()){
+        for (auto tile: testPtr) {
+            if (tile == nullptr) continue;
+            if (auto spike = std::dynamic_pointer_cast<Spike>(tile)) {
+                spike->PlayAnimation();
+                spike->Collides(m_Hero);
+            }
+        }
+        stepLock = m_Hero->GetStep();
+        // spikeChange = true;
+    }
+
 
     m_Root.Update();
 }

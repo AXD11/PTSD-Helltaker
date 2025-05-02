@@ -22,11 +22,11 @@ Enemy::Enemy(): currentState(EnemyState::STANDBY)
         enemyBeKickedImages.emplace_back(GA_RESOURCE_DIR"/Image/Enemy/BeKicked/beKicked" + std::to_string(i + 1) + ".png");
     }
 
-    standbyAnimation = std::make_shared<AnimatedCharacter>(enemyStandbyImages, 83, true);
+    standbyAnimation = std::make_shared<AnimatedCharacter>(enemyStandbyImages, true, 83, true);
     standbyAnimation->SetZIndex(4);
     standbyAnimation->SetVisible(true);
 
-    beKickedAnimation = std::make_shared<AnimatedCharacter>(enemyBeKickedImages, 83, false);
+    beKickedAnimation = std::make_shared<AnimatedCharacter>(enemyBeKickedImages, true, 83, false);
     beKickedAnimation->SetZIndex(4);
     beKickedAnimation->SetVisible(false);
 

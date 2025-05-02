@@ -76,14 +76,17 @@ private:
 
     std::shared_ptr<AnimatedCharacter> eyeCatch;
 
+    bool spikeChange = false;
+
     bool m_EnterDown = false;
     bool m_Up = false;
     bool m_Down = false;
     bool m_Left = false;
     bool m_Right = false;
+    int stepLock = 0;
     int moveStep = 100;
     bool reset = false;
-    int currentLevel = 7;
+    int currentLevel = 1;
     bool nextLevel = false;
     glm::vec2 init_position;
 };

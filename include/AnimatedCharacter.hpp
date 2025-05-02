@@ -1,17 +1,20 @@
 #ifndef ANIMATED_CHARACTER_HPP
 #define ANIMATED_CHARACTER_HPP
 
+#include <memory>
 #include <vector>
 #include <string>
 
 #include "Util/Animation.hpp"
 #include "Util/GameObject.hpp"
 
+#include <iostream>
+
 
 class AnimatedCharacter : public Util::GameObject {
 
 public:
-    explicit AnimatedCharacter(const std::vector<std::string>& AnimationPaths, int interval, bool loop);
+    explicit AnimatedCharacter(const std::vector<std::string>& AnimationPaths, bool play, int interval, bool loop);
 
     [[nodiscard]] bool IsLooping() const {
         return std::dynamic_pointer_cast<Util::Animation>(m_Drawable)->GetLooping();

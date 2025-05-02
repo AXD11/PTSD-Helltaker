@@ -2,6 +2,7 @@
 #include "AnimatedCharacter.hpp"
 #include "Box.hpp"
 #include "Enemy.hpp"
+#include "Spike.hpp"
 #include "Wall.hpp"
 #include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
