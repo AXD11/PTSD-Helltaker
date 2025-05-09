@@ -3,9 +3,7 @@
 #include "Hero.hpp"
 #include "Util/Input.hpp"
 #include "Util/Keycode.hpp"
-#include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
-#include <iostream>
 
 void App::Update() {
 
@@ -19,6 +17,11 @@ void App::Update() {
     }
 
     if (Util::Input::IsKeyDown(Util::Keycode::R) || reset) {
+
+        eyeCatch->SetCurrentFrame(0);
+        eyeCatch->SetVisible(true);
+        eyeCatch->Play();
+
         reset = false;
 
         m_Hero->SetState(HeroState::STANDBY);
@@ -40,7 +43,7 @@ void App::Update() {
     }
 
     if (m_Up && m_Hero->GetStep() > 0) {
-        if (m_Hero->CanMove(1, testPtr) && !m_Hero->MeetEnemy(1, enemyPtr, testPtr)) {
+        if (m_Hero->CanMove(1, testPtr, m_Devil,  enemyPtr) && !m_Hero->MeetEnemy(1, enemyPtr, testPtr)) {
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
@@ -49,7 +52,7 @@ void App::Update() {
     }
 
     if (m_Down && m_Hero->GetStep() > 0) {
-        if (m_Hero->CanMove(2, testPtr) && !m_Hero->MeetEnemy(2, enemyPtr, testPtr)) {
+        if (m_Hero->CanMove(2, testPtr, m_Devil, enemyPtr) && !m_Hero->MeetEnemy(2, enemyPtr, testPtr)) {
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
@@ -59,7 +62,7 @@ void App::Update() {
     }
 
     if (m_Left && m_Hero->GetStep() > 0) {
-        if (m_Hero->CanMove(3, testPtr) && !m_Hero->MeetEnemy(3, enemyPtr, testPtr)) {
+        if (m_Hero->CanMove(3, testPtr, m_Devil, enemyPtr) && !m_Hero->MeetEnemy(3, enemyPtr, testPtr)) {
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
@@ -69,7 +72,7 @@ void App::Update() {
     }
 
     if (m_Right && m_Hero->GetStep() > 0) {
-        if (m_Hero->CanMove(4, testPtr) && !m_Hero->MeetEnemy(4, enemyPtr, testPtr)) {
+        if (m_Hero->CanMove(4, testPtr, m_Devil, enemyPtr) && !m_Hero->MeetEnemy(4, enemyPtr, testPtr)) {
             m_Hero->GetMoveAnimation()->SetCurrentFrame(0);
             m_Hero->SetState(HeroState::MOVE);
             m_Hero->GetMoveAnimation()->Play();
@@ -96,16 +99,14 @@ void App::Update() {
     }
     
     if (m_Devil != nullptr){
-        if (m_Devil->IsNearBy(m_Hero) && !reset) {
+        if (m_Hero->IsNearBy(m_Devil) && !reset) {
             reset = true;
             currentLevel++;
             nextLevel = true;
-            eyeCatch->SetCurrentFrame(0);
-            eyeCatch->SetVisible(true);
-            eyeCatch->Play();
+            
         }
 
-        if (m_Hero->GetStep() == 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Devil->IsNearBy(m_Hero)) {
+        if (m_Hero->GetStep() == 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Hero->IsNearBy(m_Devil)) {
             m_Hero->GetDeadAnimation()->SetPosition({m_Hero->GetPosition().x, m_Hero->GetPosition().y + 232});
             m_Hero->GetDeadAnimation()->SetCurrentFrame(0);
             m_Hero->SetState(HeroState::DEAD);

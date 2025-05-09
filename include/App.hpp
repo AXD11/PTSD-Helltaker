@@ -3,12 +3,12 @@
 
 #include "AnimatedCharacter.hpp"
 #include "Background.hpp"
-#include "Box.hpp"
+// #include "Box.hpp"
 #include "Devil.hpp"
 #include "Enemy.hpp"
 #include "Hero.hpp" 
 #include "MapLoader.hpp"
-#include "Wall.hpp"
+// #include "Wall.hpp"
 #include "Floor.hpp"
 #include "pch.hpp" // IWYU pragma: export
 
@@ -76,7 +76,7 @@ private:
 
     std::shared_ptr<AnimatedCharacter> eyeCatch;
 
-    bool spikeChange = false;
+    // bool spikeChange = false;
 
     bool m_EnterDown = false;
     bool m_Up = false;
@@ -86,7 +86,7 @@ private:
     int stepLock = 0;
     int moveStep = 100;
     bool reset = false;
-    int currentLevel = 1;
+    int currentLevel = 6;
     bool nextLevel = false;
     glm::vec2 init_position;
 };

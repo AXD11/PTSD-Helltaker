@@ -2,7 +2,6 @@
 #include "AnimatedCharacter.hpp"
 #include "Box.hpp"
 #include "Wall.hpp"
-#include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
 #include <memory>
 
@@ -35,7 +34,7 @@ Enemy::Enemy(): currentState(EnemyState::STANDBY)
 
 }
 
-bool Enemy::IsColliding(const std::shared_ptr<Wall>& other, int position) const {
+bool Enemy::IsColliding(const std::shared_ptr<Tile>& other, int position) const {
     switch (position) {
         case 1:
         // LOG_DEBUG(1);
@@ -63,7 +62,32 @@ bool Enemy::IsColliding(const std::shared_ptr<Wall>& other, int position) const 
     return false;
 }
 
-bool Enemy::IsColliding(const std::shared_ptr<Box>& other, int position) const {
+// bool Enemy::IsColliding(const std::shared_ptr<Box>& other, int position) const {
+//     switch (position) {
+//         case 1:
+//             if(glm::vec2(center.x, center.y + 100) == other->GetCenter())
+//                 return true;
+//             break;
+//         case 2:
+
+//             if(glm::vec2(center.x, center.y - 100) == other->GetCenter())
+//                 return true;
+//             break;
+//         case 3:
+//             if(glm::vec2(center.x - 100, center.y) == other->GetCenter())
+//                 return true;
+//             break;
+//         case 4:
+//             if(glm::vec2(center.x + 100, center.y) == other->GetCenter())
+//                 return true;
+//             break;
+//         default:
+//             break;
+//     }
+//     return false;
+// }
+
+bool Enemy::IsColliding(const std::shared_ptr<Enemy>& other, int position) const {
     switch (position) {
         case 1:
             if(glm::vec2(center.x, center.y + 100) == other->GetCenter())
@@ -88,21 +112,22 @@ bool Enemy::IsColliding(const std::shared_ptr<Box>& other, int position) const {
     return false;
 }
 
-bool Enemy::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles){
+bool Enemy::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles, const std::vector<std::shared_ptr<Enemy>>& enemies) {
     for (const auto& tile : tiles) {
-        if (auto box = std::dynamic_pointer_cast<Box>(tile)) {
-            if (IsColliding(box, position)) {
-                return false;
-            }
+        if (tile == nullptr) continue;
+        if (IsColliding(tile, position)) {
+            SetState(EnemyState::DEAD);
+            this->SetPosition(glm::vec2(-1000, -1000));
+            return false;
         }
-        else if (auto wall = std::dynamic_pointer_cast<Wall>(tile)) {
-            if (IsColliding(wall, position)) {
-                SetState(EnemyState::DEAD);
-                // LOG_DEBUG("Is Dead? ");
-                // LOG_DEBUG(currentState == EnemyState::DEAD);
-                this->SetPosition(glm::vec2(-1000, -1000));
-                return false;
-            }
+    }
+    for (const auto& enemy : enemies) {
+        if (enemy == nullptr) continue;
+        enemy->SetCenter();
+        if (IsColliding(enemy, position)) {
+            SetState(EnemyState::DEAD);
+            this->SetPosition(glm::vec2(-1000, -1000));
+            return false;
         }
     }
     return true;

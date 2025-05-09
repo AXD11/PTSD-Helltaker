@@ -2,7 +2,10 @@
 #define BOX_HPP
 
 #include <memory>
+#include <vector>
 
+#include "Enemy.hpp"
+#include "Devil.hpp"
 #include "Tile.hpp"
 #include "Wall.hpp"
 
@@ -16,6 +19,10 @@ public:
     bool IsColliding(const std::shared_ptr<Wall>& other, int position) const;
 
     bool IsColliding(const std::shared_ptr<Box>& other, int position) const;
+
+    bool IsColliding(const std::shared_ptr<Enemy>& other, int position) const;
+
+    bool IsColliding(const std::shared_ptr<Devil>& other, int position) const;
 
     void Move(int moveStep, int position) { 
         switch (position) {
@@ -38,7 +45,7 @@ public:
         SetCenter();
     }
 
-    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles);
+    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles, const std::shared_ptr<Devil>& devil, const std::vector<std::shared_ptr<Enemy>>& enemies);
 };
 
 #endif

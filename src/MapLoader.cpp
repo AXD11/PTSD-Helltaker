@@ -2,7 +2,7 @@
 #include "Devil.hpp"
 #include "Hero.hpp"
 #include "Spike.hpp"
-#include "Util/Logger.hpp"
+// #include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
 #include <iostream>
 #include <fstream>
@@ -79,7 +79,7 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Box>();
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2});
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
-                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(1);
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(9);
                     m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
                     break;
                 case 3:
@@ -105,7 +105,26 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     m_Root.AddChild(m_Devil->GetStandbyAnimation());
                     break;
                 case 6:
+                    // 初始動態尖刺突出
                     tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Spike>(true, false, glm::vec2(init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2));
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(3);
+                    m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
+                    m_Root.AddChild(std::dynamic_pointer_cast<Spike>(tilePtr[tmpInt1 + tmpInt2 * width])->GetOnAnimation());
+                    m_Root.AddChild(std::dynamic_pointer_cast<Spike>(tilePtr[tmpInt1 + tmpInt2 * width])->GetOffAnimation());
+                    break;
+                case 7:
+                    // 初始動態尖刺收回
+                    tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Spike>(false, false, glm::vec2(init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2));
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(3);
+                    m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
+                    m_Root.AddChild(std::dynamic_pointer_cast<Spike>(tilePtr[tmpInt1 + tmpInt2 * width])->GetOnAnimation());
+                    m_Root.AddChild(std::dynamic_pointer_cast<Spike>(tilePtr[tmpInt1 + tmpInt2 * width])->GetOffAnimation());
+                    break;
+                case 8:
+                    // 靜態尖刺
+                    tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<Spike>(false, true, glm::vec2(init_position.x + 100 * tmpInt1, init_position.y - 100 * tmpInt2));
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(3);
                     m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
@@ -168,6 +187,4 @@ void MapLoader::ClearMap(std::vector<std::shared_ptr<Floor>>& floorPtr, std::vec
             enemy.reset();
         }
     }
-
-    LOG_DEBUG("Clear Map");
 }

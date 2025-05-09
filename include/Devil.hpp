@@ -7,8 +7,6 @@
 #include "AnimatedCharacter.hpp"
 #include "Util/Logger.hpp"
 #include "Wall.hpp"
-#include "Box.hpp"
-#include "Hero.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 #include "iostream"
@@ -49,17 +47,17 @@ public:
 
     [[nodiscard]] DevilState getState() const;
 
-    bool IsNearBy(const std::shared_ptr<Hero>& other) {
-        // std::cout << "Hero: {" << other->GetCenter().x << ", " << other->GetCenter().y << "} Devil: {" << center.x << ", " << center.y << "}" << std::endl;
-        if (glm::vec2{center.x, center.y + 100} == other->GetCenter()
-            || glm::vec2{center.x, center.y - 100} == other->GetCenter()
-            || glm::vec2{center.x - 100, center.y} == other->GetCenter()
-            || glm::vec2{center.x + 100, center.y} == other->GetCenter()){
-                // LOG_DEBUG("Devil is near by");
-                return true;
-            }
-        return false;
-    }
+    // bool IsNearBy(const std::shared_ptr<Hero>& other) {
+    //     // std::cout << "Hero: {" << other->GetCenter().x << ", " << other->GetCenter().y << "} Devil: {" << center.x << ", " << center.y << "}" << std::endl;
+    //     if (glm::vec2{center.x, center.y + 100} == other->GetCenter()
+    //         || glm::vec2{center.x, center.y - 100} == other->GetCenter()
+    //         || glm::vec2{center.x - 100, center.y} == other->GetCenter()
+    //         || glm::vec2{center.x + 100, center.y} == other->GetCenter()){
+    //             // LOG_DEBUG("Devil is near by");
+    //             return true;
+    //         }
+    //     return false;
+    // }
 
     void SetState(DevilState state);
 

@@ -1,12 +1,12 @@
 #include "Hero.hpp"
 #include "AnimatedCharacter.hpp"
 #include "Box.hpp"
+#include "Devil.hpp"
 #include "Enemy.hpp"
-#include "Spike.hpp"
 #include "Wall.hpp"
-#include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
 #include <memory>
+#include <vector>
 
 Hero::Hero(const std::string image, std::shared_ptr<AnimatedCharacter>& standbyAnimation, std::shared_ptr<AnimatedCharacter>& moveAnimation, std::shared_ptr<AnimatedCharacter>& kickAnimation, std::shared_ptr<AnimatedCharacter>& deadAnimation)
 : currentState(HeroState::STANDBY),
@@ -110,7 +110,7 @@ bool Hero::MeetEnemy(int position, const std::vector<std::shared_ptr<Enemy>>& en
             GetKickAnimation()->SetCurrentFrame(0);
             SetState(HeroState::KICK);
             GetKickAnimation()->Play();
-            if (skelton->CanMove(position, tiles)){
+            if (skelton->CanMove(position, tiles, enemies)){
                 skelton->GetBeKickedAnimation()->SetCurrentFrame(0);
                 skelton->SetState(EnemyState::BEKICKED);
                 skelton->GetBeKickedAnimation()->Play();
@@ -123,14 +123,14 @@ bool Hero::MeetEnemy(int position, const std::vector<std::shared_ptr<Enemy>>& en
     return false;
 }
 
-bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles){
+bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles, const std::shared_ptr<Devil> devil, const std::vector<std::shared_ptr<Enemy>> enemies){
     for (const auto& tile : tiles) {
         if (auto box = std::dynamic_pointer_cast<Box>(tile)) {
             if (IsColliding(box, position)) {
                 GetKickAnimation()->SetCurrentFrame(0);
                 SetState(HeroState::KICK);
                 GetKickAnimation()->Play();
-                if (box->CanMove(position, tiles)) {
+                if (box->CanMove(position, tiles, devil, enemies)) {
                     // LOG_DEBUG("Change to Kick");
                     box->Move(100, position);
                 }
@@ -146,6 +146,18 @@ bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles
         }
     }
     return true;
+}
+
+bool Hero::IsNearBy(const std::shared_ptr<Devil>& other) {
+    // std::cout << "Hero: {" << other->GetCenter().x << ", " << other->GetCenter().y << "} Devil: {" << center.x << ", " << center.y << "}" << std::endl;
+    if (glm::vec2{center.x, center.y + 100} == other->GetCenter()
+        || glm::vec2{center.x, center.y - 100} == other->GetCenter()
+        || glm::vec2{center.x - 100, center.y} == other->GetCenter()
+        || glm::vec2{center.x + 100, center.y} == other->GetCenter()){
+            // LOG_DEBUG("Devil is near by");
+            return true;
+        }
+    return false;
 }
 
 void Hero::SetState(HeroState newState) {

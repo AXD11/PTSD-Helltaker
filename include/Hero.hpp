@@ -6,10 +6,10 @@
 
 #include "AnimatedCharacter.hpp"
 #include "StepText.hpp"
-#include "Util/Logger.hpp"
 #include "Wall.hpp"
 #include "Box.hpp"
 #include "Enemy.hpp"
+#include "Devil.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 
@@ -86,7 +86,7 @@ public:
         deadAnimation->GetTransform().scale = scale;
     }
 
-    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles);
+    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles, const std::shared_ptr<Devil> devil, const std::vector<std::shared_ptr<Enemy>> enemies);
 
     bool MeetEnemy(int position, const std::vector<std::shared_ptr<Enemy>>& enemies, const std::vector<std::shared_ptr<Tile>>& tiles);
 
@@ -95,6 +95,8 @@ public:
     bool IsColliding(const std::shared_ptr<Box>& other, int position) const;
 
     bool IsColliding(const std::shared_ptr<Enemy>& other, int position) const;
+
+    bool IsNearBy(const std::shared_ptr<Devil>& other);
 
     std::shared_ptr<AnimatedCharacter> GetStandbyAnimation()  { return standbyAnimation; }
 

@@ -1,12 +1,9 @@
 #include "AnimatedCharacter.hpp"
 #include "App.hpp"
 
-#include "Enemy.hpp"
 #include "MapLoader.hpp"
 #include "Util/Logger.hpp"
-#include "Util/Text.hpp"
-#include "Wall.hpp"
-#include "Floor.hpp"
+// #include "Util/Text.hpp"
 #include <memory>
 #include <vector>
 
@@ -30,6 +27,8 @@ void App::Start() {
 
 
     m_MapLoader.loadMap(GA_RESOURCE_DIR"/Map/Map" + std::to_string(currentLevel) + ".json");
+
+    m_MapLoader.PrintMap();
 
     auto tmp = m_MapLoader.GetMap();
     

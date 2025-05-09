@@ -7,7 +7,7 @@
 #include "AnimatedCharacter.hpp"
 #include "Util/Logger.hpp"
 #include "Wall.hpp"
-#include "Box.hpp"
+// #include "Box.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
 
@@ -65,11 +65,11 @@ public:
         beKickedAnimation->SetPosition(m_Transform.translation);
     }
 
-    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles);
+    bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles, const std::vector<std::shared_ptr<Enemy>>& enemies);
 
-    bool IsColliding(const std::shared_ptr<Wall>& other, int position) const;
+    bool IsColliding(const std::shared_ptr<Tile>& other, int position) const;
 
-    bool IsColliding(const std::shared_ptr<Box>& other, int position) const;
+    bool IsColliding(const std::shared_ptr<Enemy>& other, int position) const;
 
     std::shared_ptr<AnimatedCharacter> GetStandbyAnimation() const { return standbyAnimation; }
 

@@ -4,7 +4,7 @@
 
 #include "Tile.hpp"
 #include "AnimatedCharacter.hpp"
-#include "hero.hpp"
+#include "Hero.hpp"
 #include <memory>
 
 
