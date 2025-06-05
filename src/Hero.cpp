@@ -3,9 +3,11 @@
 #include "Box.hpp"
 #include "Devil.hpp"
 #include "Enemy.hpp"
+#include "LockBox.hpp"
 #include "Wall.hpp"
 #include <glm/fwd.hpp>
 #include <memory>
+#include <string>
 #include <vector>
 
 Hero::Hero(const std::string image, std::shared_ptr<AnimatedCharacter>& standbyAnimation, std::shared_ptr<AnimatedCharacter>& moveAnimation, std::shared_ptr<AnimatedCharacter>& kickAnimation, std::shared_ptr<AnimatedCharacter>& deadAnimation)
@@ -17,7 +19,7 @@ Hero::Hero(const std::string image, std::shared_ptr<AnimatedCharacter>& standbyA
 {
     SetImage(image);
     SetCenter();
-    stepText = std::make_shared<StepText>(step);
+    stepText = std::make_shared<GameText>(std::to_string(step) , glm::vec2{-685.0F, -300.F});
 }
 
 bool Hero::IsColliding(const std::shared_ptr<Wall>& other, int position) const {
@@ -54,6 +56,31 @@ bool Hero::IsColliding(const std::shared_ptr<Wall>& other, int position) const {
 }
 
 bool Hero::IsColliding(const std::shared_ptr<Box>& other, int position) const {
+    switch (position) {
+        case 1:
+            if(glm::vec2(center.x, center.y + 100) == other->GetCenter())
+                return true;
+            break;
+        case 2:
+
+            if(glm::vec2(center.x, center.y - 100) == other->GetCenter())
+                return true;
+            break;
+        case 3:
+            if(glm::vec2(center.x - 100, center.y) == other->GetCenter())
+                return true;
+            break;
+        case 4:
+            if(glm::vec2(center.x + 100, center.y) == other->GetCenter())
+                return true;
+            break;
+        default:
+            break;
+    }
+    return false;
+}
+
+bool Hero::IsColliding(const std::shared_ptr<LockBox>& other, int position) const {
     switch (position) {
         case 1:
             if(glm::vec2(center.x, center.y + 100) == other->GetCenter())
@@ -142,6 +169,18 @@ bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles
             if (IsColliding(wall, position)) {
                 
                 return false;
+            }
+        }
+        else if (auto lockBox = std::dynamic_pointer_cast<LockBox>(tile)) {
+            if (IsColliding(lockBox, position)) {
+                if (getKey) {
+                    lockBox->SetVisible(false);
+                    SetLevelStep(step - 1);
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
         }
     }

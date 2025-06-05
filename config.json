@@ -1,5 +1,9 @@
 {
-    "title": "Helltaker",
-    "window_width": 1720,
-    "window_height": 1000
+  "title": "Helltaker",
+  "window_pos_x": 0,
+  "window_pos_y": 0,
+  "window_width": 1720,
+  "window_height": 1000,
+  "default_log_level": 2,
+  "fps_cap": 60
 }

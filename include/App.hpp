@@ -7,8 +7,11 @@
 #include "Devil.hpp"
 #include "Enemy.hpp"
 #include "Hero.hpp" 
+#include "Key.hpp"
+#include "LockBox.hpp"
 #include "MapLoader.hpp"
 // #include "Wall.hpp"
+#include "GameText.hpp"
 #include "Floor.hpp"
 #include "pch.hpp" // IWYU pragma: export
 
@@ -70,11 +73,17 @@ private:
 
     std::shared_ptr<Background> m_Background;
 
+    std::shared_ptr<Background> m_Background2;
+
     std::shared_ptr<Background> blackScreen;
 
     std::shared_ptr<Devil> m_Devil;
 
     std::shared_ptr<AnimatedCharacter> eyeCatch;
+
+    std::shared_ptr<GameText> levelText;
+
+    std::shared_ptr<Key> m_Key;
 
     // bool spikeChange = false;
 
@@ -86,7 +95,7 @@ private:
     int stepLock = 0;
     int moveStep = 100;
     bool reset = false;
-    int currentLevel = 6;
+    int currentLevel = 1;
     bool nextLevel = false;
     glm::vec2 init_position;
 };

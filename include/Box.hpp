@@ -15,7 +15,6 @@ class Box : public Tile {
 public:
     Box();
 
-
     bool IsColliding(const std::shared_ptr<Wall>& other, int position) const;
 
     bool IsColliding(const std::shared_ptr<Box>& other, int position) const;

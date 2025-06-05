@@ -5,7 +5,9 @@
 #include <string>
 
 #include "AnimatedCharacter.hpp"
-#include "StepText.hpp"
+#include "GameText.hpp"
+#include "Key.hpp"
+#include "LockBox.hpp"
 #include "Wall.hpp"
 #include "Box.hpp"
 #include "Enemy.hpp"
@@ -94,6 +96,8 @@ public:
 
     bool IsColliding(const std::shared_ptr<Box>& other, int position) const;
 
+    bool IsColliding(const std::shared_ptr<LockBox>& other, int position) const;
+
     bool IsColliding(const std::shared_ptr<Enemy>& other, int position) const;
 
     bool IsNearBy(const std::shared_ptr<Devil>& other);
@@ -112,9 +116,20 @@ public:
         return stepText;
     }
 
+    void IsKeyGet(bool isReset, std::shared_ptr<Key>& m_Key){
+        if (isReset) getKey = false;
+        else {
+            if (m_Key == nullptr) return;
+            if (!getKey && (m_Key->GetCenter() == center)) {
+                getKey = true;
+                m_Key->SetVisible(false);
+            }
+        }
+    }
+
     void SetLevelStep(int step){
         this->step = step;
-        stepText->SetStepText(step);
+        stepText->SetText(step);
     }
 
     int GetStep(){
@@ -129,7 +144,8 @@ private:
     std::shared_ptr<AnimatedCharacter>& kickAnimation;
     std::shared_ptr<AnimatedCharacter>& deadAnimation;
     int step = -1;
-    std::shared_ptr<StepText> stepText;
+    std::shared_ptr<GameText> stepText;
+    bool getKey = false;
 };
 
 #endif //HERO_HPP

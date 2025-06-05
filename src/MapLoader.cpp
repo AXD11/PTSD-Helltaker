@@ -1,11 +1,13 @@
 #include "MapLoader.hpp"
 #include "Devil.hpp"
 #include "Hero.hpp"
+#include "Key.hpp"
 #include "Spike.hpp"
 // #include "Util/Logger.hpp"
 #include <glm/fwd.hpp>
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -63,7 +65,7 @@ void MapLoader::PrintMap() const {
     }
 }
 
-void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_ptr<Floor>>& floorPtr, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Hero>& m_Hero, std::shared_ptr<Devil>& m_Devil) {
+void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_ptr<Floor>>& floorPtr, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Hero>& m_Hero, std::shared_ptr<Devil>& m_Devil, std::shared_ptr<Key>& m_Key) {
     int tmpInt1 = 0, tmpInt2 = 0;
     for (const auto& row : tiles) {
         for (int tile : row) {
@@ -138,6 +140,20 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
                     tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(5);
                     m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
                     break;
+                case 10:
+                    m_Key = std::make_shared<Key>();
+                    m_Key->SetPosition({init_position.x + 100 * tmpInt1,init_position.y - 100 * tmpInt2});
+                    m_Key->SetVisible(true);
+                    m_Key->SetZIndex(5);
+                    m_Root.AddChild(m_Key);
+                    break;
+                case 11:
+                    tilePtr[tmpInt1 + tmpInt2 * width] = std::make_shared<LockBox>();
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetPosition({init_position.x + 100 * tmpInt1,init_position.y - 100 * tmpInt2});
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetVisible(true);
+                    tilePtr[tmpInt1 + tmpInt2 * width]->SetZIndex(5);
+                    m_Root.AddChild(tilePtr[tmpInt1 + tmpInt2 * width]);
+                    break;
                 default:
                     break;
             }
@@ -154,7 +170,12 @@ void MapLoader::SetMap(const glm::vec2& init_position, std::vector<std::shared_p
 }
 
 
-void MapLoader::ClearMap(std::vector<std::shared_ptr<Floor>>& floorPtr, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Devil>& m_Devil) {
+void MapLoader::ClearMap(std::vector<std::shared_ptr<Floor>>& floorPtr, std::vector<std::shared_ptr<Tile>>& tilePtr, std::vector<std::shared_ptr<Enemy>>& enemyPtr, Util::Renderer& m_Root, std::shared_ptr<Devil>& m_Devil, std::shared_ptr<Key>& m_Key) {
+    if (m_Key != nullptr) {
+        m_Root.RemoveChild(m_Key);
+        m_Key.reset();
+    }
+
     if (m_Devil != nullptr) {
         m_Root.RemoveChild(m_Devil);
         m_Root.RemoveChild(m_Devil->GetStandbyAnimation());

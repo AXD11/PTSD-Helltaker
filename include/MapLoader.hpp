@@ -8,6 +8,8 @@
 #include "Wall.hpp"
 #include "Box.hpp"
 #include "Spike.hpp"
+#include "Key.hpp"
+#include "LockBox.hpp"
 #include "Enemy.hpp"
 #include "Floor.hpp"
 #include "Devil.hpp"
@@ -32,7 +34,8 @@ public:
         std::vector<std::shared_ptr<Enemy>>& enemyPtr,
         Util::Renderer& m_Root,
         std::shared_ptr<Hero>& m_Hero,
-        std::shared_ptr<Devil>& m_Devil
+        std::shared_ptr<Devil>& m_Devil,
+        std::shared_ptr<Key>& m_Key
     );
 
     void ClearMap(
@@ -40,7 +43,8 @@ public:
         std::vector<std::shared_ptr<Tile>>& tilePtr,
         std::vector<std::shared_ptr<Enemy>>& enemyPtr,
         Util::Renderer& m_Root,
-        std::shared_ptr<Devil>& m_Devil
+        std::shared_ptr<Devil>& m_Devil,
+        std::shared_ptr<Key>& m_Key
     );
 
     std::vector<std::vector<int>> GetMap() { return tiles; }

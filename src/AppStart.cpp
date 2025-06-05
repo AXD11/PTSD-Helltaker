@@ -1,10 +1,12 @@
 #include "AnimatedCharacter.hpp"
 #include "App.hpp"
 
+#include "GameText.hpp"
 #include "MapLoader.hpp"
 #include "Util/Logger.hpp"
 // #include "Util/Text.hpp"
 #include <memory>
+#include <string>
 #include <vector>
 
 void App::Start() {
@@ -18,12 +20,18 @@ void App::Start() {
     m_Background->GetTransform().scale = {-1, 1};
     m_Root.AddChild(m_Background);
 
+    m_Background2 = std::make_shared<Background>(GA_RESOURCE_DIR"/Image/Other/Level.png");
+    m_Background2->SetVisible(true);
+    m_Background2->SetZIndex(96);
+    m_Background2->SetPosition({660,-220});
+    m_Background2->GetTransform().scale = {-1, 1};
+    m_Root.AddChild(m_Background2);
+
     blackScreen = std::make_shared<Background>(GA_RESOURCE_DIR"/Image/Other/black.png");
     blackScreen->SetVisible(false);
     blackScreen->SetZIndex(98);
     blackScreen->SetPosition({0, 0});
     m_Root.AddChild(blackScreen);
-
 
 
     m_MapLoader.loadMap(GA_RESOURCE_DIR"/Map/Map" + std::to_string(currentLevel) + ".json");
@@ -38,6 +46,9 @@ void App::Start() {
     floorPtr.resize(m_MapLoader.getHeight()* m_MapLoader.getWidth());
     enemyPtr.resize(m_MapLoader.getHeight()* m_MapLoader.getWidth());
 
+    levelText = std::make_shared<GameText>(std::to_string(currentLevel),glm::vec2{700.0F, -300.F});
+    levelText->SetZIndex(99);
+    m_Root.AddChild(levelText);
 
     std::vector<std::string> heroStandbyImages;
 
@@ -108,7 +119,7 @@ void App::Start() {
     heroStandby->SetPosition(m_Hero->GetPosition());
     m_Root.AddChild(m_Hero);
 
-    m_MapLoader.SetMap(init_position, floorPtr, testPtr, enemyPtr, m_Root, m_Hero, m_Devil);
+    m_MapLoader.SetMap(init_position, floorPtr, testPtr, enemyPtr, m_Root, m_Hero, m_Devil, m_Key);
 
     m_Root.AddChild(m_Hero->GetChild());
     m_CurrentState = State::UPDATE;
