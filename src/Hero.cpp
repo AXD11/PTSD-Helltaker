@@ -175,7 +175,6 @@ bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles
             if (IsColliding(lockBox, position)) {
                 if (getKey) {
                     lockBox->SetVisible(false);
-                    SetLevelStep(step - 1);
                     return true;
                 }
                 else {

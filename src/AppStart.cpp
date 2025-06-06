@@ -29,7 +29,7 @@ void App::Start() {
 
     blackScreen = std::make_shared<Background>(GA_RESOURCE_DIR"/Image/Other/black.png");
     blackScreen->SetVisible(false);
-    blackScreen->SetZIndex(98);
+    blackScreen->SetZIndex(99);
     blackScreen->SetPosition({0, 0});
     m_Root.AddChild(blackScreen);
 

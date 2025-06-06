@@ -25,12 +25,24 @@ void App::Update() {
             reset = true;
             m_Hero->SetState(HeroState::STANDBY);
         }
+        else{
+            currentLevel = 1;
+            nextLevel = true;
+            reset = true;
+            m_Hero->SetState(HeroState::STANDBY);
+        }
     }
 
     //N跳到上一關
     if (Util::Input::IsKeyDown(Util::Keycode::N)){
         if (currentLevel > 1) {
             currentLevel--;
+            nextLevel = true;
+            reset = true;
+            m_Hero->SetState(HeroState::STANDBY);
+        } 
+        else{
+            currentLevel = 30;
             nextLevel = true;
             reset = true;
             m_Hero->SetState(HeroState::STANDBY);
@@ -142,7 +154,7 @@ void App::Update() {
         }
 
         //m_Hero死亡
-        if (m_Hero->GetStep() == 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Hero->IsNearBy(m_Devil)) {
+        if (m_Hero->GetStep() < 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Hero->IsNearBy(m_Devil)) {
             m_Hero->GetDeadAnimation()->SetPosition({m_Hero->GetPosition().x, m_Hero->GetPosition().y + 232});
             m_Hero->GetDeadAnimation()->SetCurrentFrame(0);
             m_Hero->SetState(HeroState::DEAD);
