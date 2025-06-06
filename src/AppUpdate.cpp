@@ -13,7 +13,7 @@ void App::Update() {
     m_Right = Util::Input::IsKeyDown(Util::Keycode::D);
 
     //ESC退出遊戲
-    if (Util::Input::IsKeyPressed(Util::Keycode::ESCAPE) || Util::Input::IfExit()) {
+    if (Util::Input::IsKeyPressed(Util::Keycode::ESCAPE) || Util::Input::IfExit() || finish) {
         m_CurrentState = State::END;
     }
 
@@ -147,6 +147,9 @@ void App::Update() {
     if (m_Devil != nullptr){
         //達到目標位置
         if (m_Hero->IsNearBy(m_Devil) && !reset) {
+            if (currentLevel == 30){
+                finish = true;
+            }
             reset = true;
             currentLevel++;
             nextLevel = true;

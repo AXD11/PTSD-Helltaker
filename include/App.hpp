@@ -98,6 +98,8 @@ private:
     int currentLevel = 1;
     bool nextLevel = false;
     glm::vec2 init_position;
+
+    bool finish = false;
 };
 
 #endif
