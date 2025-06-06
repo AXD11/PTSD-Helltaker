@@ -9,7 +9,7 @@
 
 class GameText : public Util::GameObject {
 public:
-    GameText(std::string text, glm::vec2 position):GameObject(std::make_unique<Util::Text>("/Users/linshengjie/Desktop/OOP/PTSD-Helltaker/Resources/fonts/Attack.ttf", 50, text, Util::Color::FromName(Util::Colors::WHITE)), 97){
+    GameText(std::string text, glm::vec2 position):GameObject(std::make_unique<Util::Text>(GA_RESOURCE_DIR"/Font/Attack.ttf", 50, text, Util::Color::FromName(Util::Colors::WHITE)), 97){
         // m_Transform.translation = {-685.0F, -300.F};
         m_Transform.translation = position;
     }
