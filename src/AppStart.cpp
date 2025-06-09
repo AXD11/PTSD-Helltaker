@@ -55,7 +55,7 @@ void App::Start() {
     enemyPtr.resize(m_MapLoader.getHeight()* m_MapLoader.getWidth());
 
     levelText = std::make_shared<GameText>(std::to_string(currentLevel),glm::vec2{700.0F, -300.F});
-    levelText->SetZIndex(99);
+    levelText->SetZIndex(98);
     m_Root.AddChild(levelText);
 
     std::vector<std::string> heroStandbyImages;
