@@ -14,6 +14,7 @@
 #include "Devil.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
+#include "Util/SFX.hpp"
 
 
 enum class HeroState {
@@ -61,24 +62,26 @@ public:
 
     void MoveUp(int moveStep) { 
         SetPosition(glm::vec2(m_Transform.translation.x, m_Transform.translation.y + moveStep));
+        moveEffects->Play();
         SetCenter();
     }
 
     void MoveDown(int moveStep) { 
         SetPosition(glm::vec2(m_Transform.translation.x, m_Transform.translation.y - moveStep));
+        moveEffects->Play();
         SetCenter();
     }
 
     void MoveRight(int moveStep) {
         SetPosition(glm::vec2(m_Transform.translation.x + moveStep, m_Transform.translation.y));
+        moveEffects->Play();
         SetCenter();
-        SetScale(glm::vec2(1, 1));
     }
 
     void MoveLeft(int moveStep) { 
         SetPosition(glm::vec2(m_Transform.translation.x - moveStep, m_Transform.translation.y));
+        moveEffects->Play();
         SetCenter();
-        SetScale(glm::vec2(-1, -1));
     }
 
     void SetScale(glm::vec2 scale){
@@ -122,6 +125,7 @@ public:
             if (m_Key == nullptr) return;
             if (!getKey && (m_Key->GetCenter() == center)) {
                 getKey = true;
+                getKeyEffects->Play();
                 m_Key->SetVisible(false);
             }
         }
@@ -146,6 +150,9 @@ private:
     int step = -1;
     std::shared_ptr<GameText> stepText;
     bool getKey = false;
+    std::shared_ptr<Util::SFX> moveEffects;
+    std::shared_ptr<Util::SFX> kickBoxEffects;
+    std::shared_ptr<Util::SFX> getKeyEffects;
 };
 
 #endif //HERO_HPP

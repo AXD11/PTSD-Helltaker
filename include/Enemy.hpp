@@ -10,6 +10,7 @@
 // #include "Box.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
+#include "Util/SFX.hpp"
 
 
 enum class EnemyState {
@@ -63,6 +64,8 @@ public:
         SetCenter();
         standbyAnimation->SetPosition(m_Transform.translation);
         beKickedAnimation->SetPosition(m_Transform.translation);
+
+        beKickedEffects->Play();
     }
 
     bool CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles, const std::vector<std::shared_ptr<Enemy>>& enemies);
@@ -82,6 +85,8 @@ private:
     glm::vec2 center;
     std::shared_ptr<AnimatedCharacter> standbyAnimation;
     std::shared_ptr<AnimatedCharacter> beKickedAnimation;
+    std::shared_ptr<Util::SFX> beKickedEffects;
+    std::shared_ptr<Util::SFX> deathEffects;
 };
 
 #endif //HERO_HPP

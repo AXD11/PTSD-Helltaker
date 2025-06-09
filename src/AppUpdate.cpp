@@ -52,6 +52,9 @@ void App::Update() {
     //R或reset刷新關卡
     if (Util::Input::IsKeyDown(Util::Keycode::R) || reset) {
 
+        m_Soundffects->LoadMedia(GA_RESOURCE_DIR"/Audio/screen_changer_part1_01.wav");
+        m_Soundffects->Play();
+        
         eyeCatch->SetCurrentFrame(0);
         eyeCatch->SetVisible(true);
         eyeCatch->Play();
@@ -157,11 +160,15 @@ void App::Update() {
         }
 
         //m_Hero死亡
-        if (m_Hero->GetStep() < 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Hero->IsNearBy(m_Devil)) {
+        if (m_Hero->GetStep() <= 0 && m_Hero->GetCurrentState() != HeroState::DEAD && !m_Hero->IsNearBy(m_Devil)) {
             m_Hero->GetDeadAnimation()->SetPosition({m_Hero->GetPosition().x, m_Hero->GetPosition().y + 232});
             m_Hero->GetDeadAnimation()->SetCurrentFrame(0);
             m_Hero->SetState(HeroState::DEAD);
             m_Hero->GetDeadAnimation()->Play();
+
+            m_Soundffects->LoadMedia(GA_RESOURCE_DIR"/Audio/player_death_01.wav");
+            m_Soundffects->Play();
+
             blackScreen->SetVisible(true);
         }
     }

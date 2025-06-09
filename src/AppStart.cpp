@@ -13,6 +13,14 @@ void App::Start() {
     LOG_TRACE("Start");
 
 
+    
+    m_SFX = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/Vitality.wav");
+    m_SFX->SetVolume(50);
+    m_SFX->Play(1, -1);
+
+    m_Soundffects = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/screen_changer_part1_01.wav");
+    m_Soundffects->SetVolume(50);
+
     m_Background = std::make_shared<Background>(GA_RESOURCE_DIR"/Image/Other/Step.png");
     m_Background->SetVisible(true);
     m_Background->SetZIndex(96);

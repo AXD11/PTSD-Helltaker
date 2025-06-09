@@ -29,6 +29,12 @@ Enemy::Enemy(): currentState(EnemyState::STANDBY)
     beKickedAnimation->SetZIndex(4);
     beKickedAnimation->SetVisible(false);
 
+    beKickedEffects = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/enemy_kick_01.wav");
+    beKickedEffects->SetVolume(50);
+
+    deathEffects = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/enemy_die_03.wav");
+    deathEffects->SetVolume(50);
+
     m_Drawable = std::make_shared<Util::Image>(GA_RESOURCE_DIR"/Image/Enemy/Sprite.png");
     SetCenter();
 
@@ -62,31 +68,6 @@ bool Enemy::IsColliding(const std::shared_ptr<Tile>& other, int position) const 
     return false;
 }
 
-// bool Enemy::IsColliding(const std::shared_ptr<Box>& other, int position) const {
-//     switch (position) {
-//         case 1:
-//             if(glm::vec2(center.x, center.y + 100) == other->GetCenter())
-//                 return true;
-//             break;
-//         case 2:
-
-//             if(glm::vec2(center.x, center.y - 100) == other->GetCenter())
-//                 return true;
-//             break;
-//         case 3:
-//             if(glm::vec2(center.x - 100, center.y) == other->GetCenter())
-//                 return true;
-//             break;
-//         case 4:
-//             if(glm::vec2(center.x + 100, center.y) == other->GetCenter())
-//                 return true;
-//             break;
-//         default:
-//             break;
-//     }
-//     return false;
-// }
-
 bool Enemy::IsColliding(const std::shared_ptr<Enemy>& other, int position) const {
     switch (position) {
         case 1:
@@ -117,7 +98,9 @@ bool Enemy::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tile
         if (tile == nullptr) continue;
         if (IsColliding(tile, position)) {
             SetState(EnemyState::DEAD);
-            this->SetPosition(glm::vec2(-1000, -1000));
+            this->SetPosition(glm::vec2(-10000, -10000));
+
+            deathEffects->Play();
             return false;
         }
     }
@@ -126,7 +109,9 @@ bool Enemy::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tile
         enemy->SetCenter();
         if (IsColliding(enemy, position)) {
             SetState(EnemyState::DEAD);
-            this->SetPosition(glm::vec2(-1000, -1000));
+            this->SetPosition(glm::vec2(-10000, -10000));
+
+            deathEffects->Play();
             return false;
         }
     }

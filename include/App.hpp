@@ -15,6 +15,7 @@
 #include "Floor.hpp"
 #include "pch.hpp" // IWYU pragma: export
 
+#include "Util/SFX.hpp"
 #include "Util/Renderer.hpp"
 #include <memory>
 #include <vector>
@@ -84,6 +85,10 @@ private:
     std::shared_ptr<GameText> levelText;
 
     std::shared_ptr<Key> m_Key;
+
+    std::shared_ptr<Util::SFX> m_SFX;
+
+    std::shared_ptr<Util::SFX> m_Soundffects;
 
     // bool spikeChange = false;
 

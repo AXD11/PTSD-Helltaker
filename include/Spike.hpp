@@ -7,6 +7,8 @@
 #include "Hero.hpp"
 #include <memory>
 
+#include "Util/SFX.hpp"
+
 
 class Spike : public Tile {
 public:

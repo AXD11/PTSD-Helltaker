@@ -17,6 +17,15 @@ Hero::Hero(const std::string image, std::shared_ptr<AnimatedCharacter>& standbyA
   kickAnimation(kickAnimation),
   deadAnimation(deadAnimation)
 {
+    moveEffects = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/character_move_01.wav");
+    moveEffects->SetVolume(50);
+
+    kickBoxEffects = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/stone_kick_01.wav");
+    kickBoxEffects->SetVolume(50);
+
+    getKeyEffects = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/key_pick_up_01.wav");
+    getKeyEffects->SetVolume(50);
+
     SetImage(image);
     SetCenter();
     stepText = std::make_shared<GameText>(std::to_string(step) , glm::vec2{-685.0F, -300.F});
@@ -137,6 +146,9 @@ bool Hero::MeetEnemy(int position, const std::vector<std::shared_ptr<Enemy>>& en
             GetKickAnimation()->SetCurrentFrame(0);
             SetState(HeroState::KICK);
             GetKickAnimation()->Play();
+
+
+
             if (skelton->CanMove(position, tiles, enemies)){
                 skelton->GetBeKickedAnimation()->SetCurrentFrame(0);
                 skelton->SetState(EnemyState::BEKICKED);
@@ -157,6 +169,9 @@ bool Hero::CanMove(int position, const std::vector<std::shared_ptr<Tile>>& tiles
                 GetKickAnimation()->SetCurrentFrame(0);
                 SetState(HeroState::KICK);
                 GetKickAnimation()->Play();
+
+                kickBoxEffects->Play();
+
                 if (box->CanMove(position, tiles, devil, enemies)) {
                     // LOG_DEBUG("Change to Kick");
                     box->Move(100, position);

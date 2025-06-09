@@ -51,11 +51,14 @@ Spike::Spike(bool isOn, bool isStatic, glm::vec2 position): Tile(GA_RESOURCE_DIR
 
 bool Spike::Collides(const std::shared_ptr<Hero>& other) const
 {
-    LOG_DEBUG("Spike is On");
-    LOG_DEBUG(isSpikeOn);
     if(GetCenter() == other->GetCenter()){
-        if (isSpikeOn || isSpikeStatic)
+        if (isSpikeOn || isSpikeStatic){
+            Util::SFX m_SoundEffects(GA_RESOURCE_DIR"/Audio/spikes_damage_01.wav");
+            m_SoundEffects.SetVolume(50);
+            m_SoundEffects.Play();
+            
             other->SetLevelStep(other->GetStep() - 1);
+        }
         return true;
     }
     return false;
