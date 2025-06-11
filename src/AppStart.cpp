@@ -4,7 +4,6 @@
 #include "GameText.hpp"
 #include "MapLoader.hpp"
 #include "Util/Logger.hpp"
-// #include "Util/Text.hpp"
 #include <memory>
 #include <string>
 #include <vector>
@@ -16,7 +15,7 @@ void App::Start() {
     
     m_SFX = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/Vitality.wav");
     m_SFX->SetVolume(50);
-    m_SFX->Play(1, -1);
+    m_SFX->Play(9999, -1);
 
     m_Soundffects = std::make_shared<Util::SFX>(GA_RESOURCE_DIR"/Audio/screen_changer_part1_01.wav");
     m_Soundffects->SetVolume(50);

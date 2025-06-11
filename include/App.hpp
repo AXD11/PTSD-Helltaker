@@ -10,7 +10,6 @@
 #include "Key.hpp"
 #include "LockBox.hpp"
 #include "MapLoader.hpp"
-// #include "Wall.hpp"
 #include "GameText.hpp"
 #include "Floor.hpp"
 #include "pch.hpp" // IWYU pragma: export
@@ -34,21 +33,12 @@ public:
 
     void Update();
 
-    void End(); // NOLINT(readability-convert-member-functions-to-static)
+    void End();
 
 private:
     void ValidTask();
 
 private:
-    // enum class Phase {
-    //     CHANGE_CHARACTER_IMAGE,
-    //     ABLE_TO_MOVE,
-    //     COLLIDE_DETECTION,
-    //     BEE_ANIMATION,
-    //     OPEN_THE_DOORS,
-    //     COUNTDOWN,
-    // };
-
 
     State m_CurrentState = State::START;
 
@@ -89,8 +79,6 @@ private:
     std::shared_ptr<Util::SFX> m_SFX;
 
     std::shared_ptr<Util::SFX> m_Soundffects;
-
-    // bool spikeChange = false;
 
     bool m_EnterDown = false;
     bool m_Up = false;
